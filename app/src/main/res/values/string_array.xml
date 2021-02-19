@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="coax_array">
+        <item>RG 174</item>
+        <item>RG 174_U</item>
+        <item>LMR 195_FR</item>
+        <item>HDF 195</item>
+        <item>LMR 200</item>
+        <item>LMR 400</item>
+        <item>RG 316</item>
+        <item>RG 58</item>
+        <item>H 155A00</item>
+        <item>Enviroflex 316_D</item>
+        <item>LEONI Dacar 302</item>
+        <item>RG 8</item>
+        <item>RTK 031</item>
+    </string-array>
+    <string-array name="Freznel_Zones">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="distances">
+        <item>m</item>
+        <item>ft</item>
+        <item>Km</item>
+        <item>mile</item>
+    </string-array>
+    <string-array name="distances_few">
+        <item>Km</item>
+        <item>mile</item>
+    </string-array>
+</resources>

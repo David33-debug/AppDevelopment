@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioGroup
+            android:id="@+id/powerRadio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/titleWatts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Power in Watts:"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/Watts"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+
+            <RadioButton
+                android:id="@+id/titledBm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Power in dBm:"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/dBm"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+
+            <RadioButton
+                android:id="@+id/titledBmV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Power in dBmV:"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/dBmV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+
+            <RadioButton
+                android:id="@+id/titleuV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Power in uV:"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/uV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+
+            <RadioButton
+                android:id="@+id/titledBW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Power in dBW"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/dBw"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonPower"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="calculate" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear" />
+
+        <TextView
+            android:id="@+id/warningLabel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="*Please note all conversions are done assuming a standard RF characteristic impedence of 50Ω"
+            android:textColor="@android:color/holo_red_dark" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

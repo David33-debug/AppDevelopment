@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.testapplication.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_coax"
+        android:name="com.example.testapplication.ui.design.CoaxFragment"
+        android:label="@string/menu_coax"
+        tools:layout="@layout/fragment_coax"/>
+    <fragment
+        android:id="@+id/nav_fresnel"
+        android:name="com.example.testapplication.ui.design.fragment_fresnel"
+        android:label="@string/menu_fresnel"
+        tools:layout="@layout/fragment_fresnel"/>
+    <fragment
+        android:id="@+id/nav_link"
+        android:name="com.example.testapplication.ui.design.fragment_link"
+        android:label="@string/menu_link"
+        tools:layout="@layout/fragment_link"/>
+    <fragment
+        android:id="@+id/nav_power"
+        android:name="com.example.testapplication.ui.design.fragment_power"
+        android:label="@string/menu_power"
+        tools:layout="@layout/fragment_power"/>
+    <fragment
+        android:id="@+id/nav_vswr"
+        android:name="com.example.testapplication.ui.design.VSWRFragment"
+        android:label="@string/menu_vswr"
+        tools:layout="@layout/fragment_vswr"/>
+</navigation>
