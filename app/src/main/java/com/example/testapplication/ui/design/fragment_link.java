@@ -35,10 +35,11 @@ public class fragment_link extends Fragment {
     EditText locationAGain, LocationATxPower, LocationAConnectorLoss, LocationACoaxCableLoss;
     EditText locationBGain, LocationBRxSensitivity, LocationBConnectorLoss, LocationBCoaxCableLoss;
     EditText TotalCoaxLoss, FreeSpacePathLoss, MinAntennaAGain, MaxPermissibleCoaxLoss, MaxPermissibleFreeSpacePathLoss, EstimatedReceivedSignalAtB;
-    //RadioButton
-    //RadioGroup
+    RadioButton Distance, TxPower, FadeMargin;
+    RadioGroup outputCalc;
     Spinner distance_unit,coax1,coax2;
     String itemDistance,itemCoax1,itemCoax2;
+    int calculator=0;
 
     CoaxCalcs coax= new CoaxCalcs();
     int row=0,column=0;
@@ -94,13 +95,18 @@ public class fragment_link extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //groupChoice=(RadioGroup) getView().findViewById(R.id.linkRadioGroup);
+        outputCalc=(RadioGroup) getView().findViewById(R.id.radioOutput);
+
+        Distance=(RadioButton) getView().findViewById(R.id.radioButton5);
+        FadeMargin=(RadioButton) getView().findViewById(R.id.radioButton6);
+        TxPower=(RadioButton) getView().findViewById(R.id.radioButton7);
+
 
         calculate=(Button) getView().findViewById(R.id.button);
         distance=(EditText) getView().findViewById(R.id.Distance);
         frequency=(EditText) getView().findViewById(R.id.Frequency);
         fadingMargin=(EditText) getView().findViewById(R.id.FadingMargin);
-        ancillaryGain=(EditText) getView().findViewById(R.id.AncillaryGain);
+        //ancillaryGain=(EditText) getView().findViewById(R.id.AncillaryGain);
 
         locationAGain=(EditText) getView().findViewById(R.id.GainTransmitter);
         LocationATxPower=(EditText) getView().findViewById(R.id.TxTransmit);
@@ -135,6 +141,9 @@ public class fragment_link extends Fragment {
         MaxPermissibleFreeSpacePathLoss.setTextColor(Color.RED);
         EstimatedReceivedSignalAtB.setEnabled(false);
         EstimatedReceivedSignalAtB.setTextColor(Color.RED);
+
+        frequency.setEnabled(false);
+        fadingMargin.setEnabled(false);
 
         ArrayAdapter<CharSequence> adapter= ArrayAdapter.createFromResource(fragment_link.this.getContext() , R.array.distances_few, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -206,12 +215,7 @@ public class fragment_link extends Fragment {
 
             }
         });
-/*
-        groupChoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-            }
-        });*/
+
 
         LocationACoaxCableLoss.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -316,19 +320,12 @@ public class fragment_link extends Fragment {
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
                 }
-                        /*if (!BuildFile.FLAVOR.equals(testing)) {
-                            try {
-                                Double.parseDouble(testing);
-                            } catch (NumberFormatException e) {
-                                LocationBConnectorLoss.setText(BuildFile.FLAVOR);
-                            }
-                        }*/
+
             }
 
             public void afterTextChanged(Editable s) {
             }
         });
-        //final EditText transmitConnector4 = transmitConnector2;
         LocationAConnectorLoss.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -342,19 +339,13 @@ public class fragment_link extends Fragment {
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
                 }
-                        /*if (!BuildFile.FLAVOR.equals(testing)) {
-                            try {
-                                Double.parseDouble(testing);
-                            } catch (NumberFormatException e) {
-                                LocationAConnectorLoss.setText(BuildFile.FLAVOR);
-                            }
-                        }*/
+
             }
 
             public void afterTextChanged(Editable s) {
             }
         });
-        //final EditText txTransmit5 = txTransmit3;
+
         LocationATxPower.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -368,21 +359,13 @@ public class fragment_link extends Fragment {
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
                 }
-                        /*if (!BuildFile.FLAVOR.equals(testing)) {
-                            try {
-                                Double.parseDouble(testing);
-                            } catch (NumberFormatException e) {
-                                LocationATxPower.setText(BuildFile.FLAVOR);
-                            }
-                        }*/
+
             }
 
             public void afterTextChanged(Editable s) {
             }
         });
-        //final EditText txRecieve5 = txRecieve3;
 
-        //final EditText rxRecieverEdit4 = rxRecieverEdit2;
         LocationBRxSensitivity.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -396,15 +379,6 @@ public class fragment_link extends Fragment {
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
                 }
-                        /*if (!BuildFile.FLAVOR.equals(testing)) {
-                            try {
-                                Double.parseDouble(testing);
-                            } catch (NumberFormatException e) {
-                                if (!"-".equals(Character.toString(testing.charAt(start)))) {
-                                    LocationBRxSensitivity.setText(BuildFile.FLAVOR);
-                                }
-                            }
-                        }*/
             }
 
             public void afterTextChanged(Editable s) {
@@ -423,15 +397,7 @@ public class fragment_link extends Fragment {
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
                 }
-                        /*if (!BuildFile.FLAVOR.equals(testing)) {
-                            try {
-                                Double.parseDouble(testing);
-                            } catch (NumberFormatException e) {
-                                if (!"-".equals(Character.toString(testing.charAt(start)))) {
-                                    locationBGain.setText(BuildFile.FLAVOR);
-                                }
-                            }
-                        }*/
+
             }
 
             public void afterTextChanged(Editable s) {
@@ -449,18 +415,37 @@ public class fragment_link extends Fragment {
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
                 }
-                        /*if (!BuildFile.FLAVOR.equals(testing)) {
-                            try {
-                                Double.parseDouble(testing);
-                            } catch (NumberFormatException e) {
-                                if (!"-".equals(Character.toString(testing.charAt(start)))) {
-                                    locationBGain.setText(BuildFile.FLAVOR);
-                                }
-                            }
-                        }*/
             }
 
             public void afterTextChanged(Editable s) {
+            }
+        });
+
+        outputCalc.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId==R.id.radioButton5)
+                {
+                    calculator=0;
+                    distance.setEnabled(true);
+                    frequency.setEnabled(false);
+                    fadingMargin.setEnabled(false);
+                }
+                else if(checkedId==R.id.radioButton6)
+                {
+                    calculator=1;
+                    frequency.setEnabled(true);
+                    distance.setEnabled(false);
+                    fadingMargin.setEnabled(false);
+                }
+                else if(checkedId==R.id.radioButton7)
+                {
+                    calculator=2;
+                    frequency.setEnabled(false);
+                    distance.setEnabled(false);
+                    fadingMargin.setEnabled(true);
+                }
+
             }
         });
 
