@@ -26,15 +26,17 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.testapplication.R;
 
 import Logic.CoaxCalcs;
+import Logic.LinkCalcs;
 
 import static java.lang.Math.log10;
 
 public class fragment_link extends Fragment {
+    TextView unit1,unit2;
     Button calculate;
-    EditText distance, frequency, fadingMargin, ancillaryGain;
-    EditText locationAGain, LocationATxPower, LocationAConnectorLoss, LocationACoaxCableLoss;
+    EditText distance, frequency, fadingMargin, transmitPower;
+    EditText locationAGain, LocationATxPower, LocationAConnectorLoss, LocationACoaxCableLoss,cable1Length,cable2Length;
     EditText locationBGain, LocationBRxSensitivity, LocationBConnectorLoss, LocationBCoaxCableLoss;
-    EditText TotalCoaxLoss, FreeSpacePathLoss, MinAntennaAGain, MaxPermissibleCoaxLoss, MaxPermissibleFreeSpacePathLoss, EstimatedReceivedSignalAtB;
+    EditText TotalCoaxLoss, FreeSpacePathLoss,ERP,MaxPermissibleCoaxLoss, MaxPermissibleFreeSpacePathLoss, EstimatedReceivedSignalAtB;
     RadioButton Distance, TxPower, FadeMargin;
     RadioGroup outputCalc;
     Spinner distance_unit,coax1,coax2;
@@ -42,11 +44,12 @@ public class fragment_link extends Fragment {
     int calculator=0;
 
     CoaxCalcs coax= new CoaxCalcs();
+    LinkCalcs linkB=new LinkCalcs();
     int row=0,column=0;
 
     double cableAttenuation=0;
     double cableLength1,cableLength2;
-    double totalCoaxLoss1,totalCoaxLoss2;
+    double CoaxLossTx,CoaxLossRx;
 
 
     double powerReceived,powerReceived1;
@@ -57,12 +60,14 @@ public class fragment_link extends Fragment {
     double gainReceiver=0;
     double powerTransmitted=0;
 
+    double TransmitPower;
+    double fadeMargin;
+
     double transmitGainDouble;
     double recieverGainDouble;
-    double rxRecieverDouble;
+    double RxSensitivity;
     double txTransmitDouble;
     double totalCoaxDouble;
-    double fadingDouble;
     double recieveConnectorDouble;
     double transmitConnectorDouble;
     double freeSpaceDouble;
@@ -95,19 +100,27 @@ public class fragment_link extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        unit1=(TextView)getView().findViewById(R.id.textViewUnit1);
+        unit2=(TextView)getView().findViewById(R.id.textViewUnit2);
+        unit1.setText("(m)");
+        unit2.setText("(m)");
+
         outputCalc=(RadioGroup) getView().findViewById(R.id.radioOutput);
 
         Distance=(RadioButton) getView().findViewById(R.id.radioButton5);
         FadeMargin=(RadioButton) getView().findViewById(R.id.radioButton6);
         TxPower=(RadioButton) getView().findViewById(R.id.radioButton7);
 
-
+        transmitPower=(EditText) getView().findViewById(R.id.TxPower);
         calculate=(Button) getView().findViewById(R.id.button);
         distance=(EditText) getView().findViewById(R.id.Distance);
-        frequency=(EditText) getView().findViewById(R.id.Frequency);
         fadingMargin=(EditText) getView().findViewById(R.id.FadingMargin);
-        //ancillaryGain=(EditText) getView().findViewById(R.id.AncillaryGain);
 
+        cable1Length=(EditText) getView().findViewById(R.id.Cable1Input);
+        cable2Length=(EditText) getView().findViewById(R.id.Cable2Input);
+
+
+        frequency=(EditText) getView().findViewById(R.id.Frequency);
         locationAGain=(EditText) getView().findViewById(R.id.GainTransmitter);
         LocationATxPower=(EditText) getView().findViewById(R.id.TxTransmit);
         LocationAConnectorLoss=(EditText) getView().findViewById(R.id.ConnectorTransmit);
@@ -120,7 +133,7 @@ public class fragment_link extends Fragment {
 
         TotalCoaxLoss=(EditText) getView().findViewById(R.id.TotalCoax);
         FreeSpacePathLoss=(EditText) getView().findViewById(R.id.FreeSpaceLoss);
-        MinAntennaAGain=(EditText) getView().findViewById(R.id.maxToDisplay);
+        ERP=(EditText) getView().findViewById(R.id.ERPToDisplay);
         MaxPermissibleCoaxLoss=(EditText) getView().findViewById(R.id.maxACoax);
         MaxPermissibleFreeSpacePathLoss=(EditText) getView().findViewById(R.id.maxFreeSpaceLoss);
         EstimatedReceivedSignalAtB=(EditText)getView().findViewById(R.id.Bsignal);
@@ -133,8 +146,9 @@ public class fragment_link extends Fragment {
         TotalCoaxLoss.setTextColor(Color.RED);
         FreeSpacePathLoss.setEnabled(false);
         FreeSpacePathLoss.setTextColor(Color.RED);
-        MinAntennaAGain.setEnabled(false);
-        MinAntennaAGain.setTextColor(Color.RED);
+
+        ERP.setEnabled(false);
+        ERP.setTextColor(Color.RED);
         MaxPermissibleCoaxLoss.setEnabled(false);
         MaxPermissibleCoaxLoss.setTextColor(Color.RED);
         MaxPermissibleFreeSpacePathLoss.setEnabled(false);
@@ -142,7 +156,7 @@ public class fragment_link extends Fragment {
         EstimatedReceivedSignalAtB.setEnabled(false);
         EstimatedReceivedSignalAtB.setTextColor(Color.RED);
 
-        frequency.setEnabled(false);
+        transmitPower.setEnabled(false);
         fadingMargin.setEnabled(false);
 
         ArrayAdapter<CharSequence> adapter= ArrayAdapter.createFromResource(fragment_link.this.getContext() , R.array.distances_few, android.R.layout.simple_spinner_item);
@@ -153,6 +167,16 @@ public class fragment_link extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 itemDistance=parent.getItemAtPosition(position).toString();
+                if(itemDistance.equals("Km"))
+                {
+                    unit1.setText("(m)");
+                    unit2.setText("(m)");
+                }
+                else if(itemDistance.equals("mile"))
+                {
+                    unit1.setText("(ft)");
+                    unit2.setText("(ft)");
+                }
             }
 
             @Override
@@ -224,7 +248,7 @@ public class fragment_link extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String newString = s.toString();
                 try {
-                    Double.parseDouble(newString);
+                    CoaxLossTx=Double.parseDouble(newString);
                 }
                 catch(NumberFormatException e)
                 {
@@ -243,7 +267,7 @@ public class fragment_link extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String newString = s.toString();
                 try {
-                    Double.parseDouble(newString);
+                    CoaxLossRx=Double.parseDouble(newString);
                 }
                 catch(NumberFormatException e)
                 {
@@ -373,7 +397,7 @@ public class fragment_link extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String testing = s.toString();
                 try {
-                    Double.parseDouble(testing);
+                    RxSensitivity=Double.parseDouble(testing);
                 }
                 catch(NumberFormatException e)
                 {
@@ -428,29 +452,58 @@ public class fragment_link extends Fragment {
                 {
                     calculator=0;
                     distance.setEnabled(true);
-                    frequency.setEnabled(false);
+                    transmitPower.setEnabled(false);
                     fadingMargin.setEnabled(false);
                 }
                 else if(checkedId==R.id.radioButton6)
                 {
                     calculator=1;
-                    frequency.setEnabled(true);
+                    transmitPower.setEnabled(true);
                     distance.setEnabled(false);
                     fadingMargin.setEnabled(false);
                 }
                 else if(checkedId==R.id.radioButton7)
                 {
                     calculator=2;
-                    frequency.setEnabled(false);
+                    transmitPower.setEnabled(false);
                     distance.setEnabled(false);
                     fadingMargin.setEnabled(true);
                 }
-
             }
         });
 
         calculate.setOnClickListener(v -> {
             coax.attenuationLoss_dB_m(frequencyMHz);
+            switch (calculator)
+            {
+                case 0:
+                    TransmitPower=linkB.TxPower(itemDistance,distanceKm,frequencyMHz,RxSensitivity,fadeMargin,CoaxLossTx,gainTransmitter,CoaxLossRx,gainReceiver);
+                    transmitPower.setText(String.valueOf(TransmitPower));
+                    fadingMargin.setText(String.valueOf(linkB.fadeMarginCalc(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx,RxSensitivity)));
+                    break;
+                case 1:
+                    distance.setText(String.valueOf(linkB.distanceCalc(frequencyMHz,fadeMargin,RxSensitivity,TransmitPower,CoaxLossTx,gainTransmitter,CoaxLossRx,gainReceiver)));
+                    fadingMargin.setText(String.valueOf(linkB.fadeMarginCalc(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx,RxSensitivity)));
+                    break;
+                case 2:
+                    TransmitPower=linkB.TxPower(itemDistance,distanceKm,frequencyMHz,RxSensitivity,fadeMargin,CoaxLossTx,gainTransmitter,CoaxLossRx,gainReceiver);
+                    transmitPower.setText(String.valueOf(TransmitPower));
+                    distance.setText(String.valueOf(linkB.distanceCalc(frequencyMHz,fadeMargin,RxSensitivity,TransmitPower,CoaxLossTx,gainTransmitter,CoaxLossRx,gainReceiver)));
+                    break;
+            }
+            ERP.setText(String.valueOf(linkB.erp(TransmitPower,gainTransmitter,CoaxLossTx)));
+            /*checking1 = txRecieveDouble - rxTransmitDouble;
+
+            TotalCoaxLoss.setText(String.valueOf(CoaxLossRx+CoaxLossTx));
+            FreeSpacePathLoss.setText(String.valueOf(linkB.freeSpaceLoss(itemDistance,distanceKm,frequencyMHz)));
+
+            MinAntennaAGain.setText(freeSpaceDouble - ((((((checking1 - totalCoaxDouble) - recieveConnectorDouble) - transmitConnectorDouble) + ancillaryDouble) - fadingDouble) + recieverGainDouble);
+
+            MaxPermissibleCoaxLoss.setText(answerDoubleCoax = (((((((checking1 - recieveConnectorDouble) - recieverDouble) - transmitConnectorDouble) + ancillaryDouble) - fadingDouble) + recieverGainDouble) + transmitGainDouble) - freeSpaceDouble);
+            MaxPermissibleFreeSpacePathLoss.setText((((((checking1 - totalCoaxDouble) - recieveConnectorDouble) - transmitConnectorDouble) + ancillaryDouble) - fadingDouble) + transmitGainDouble + recieverGainDouble;
+
+            EstimatedReceivedSignalAtB.setText("");*/
+
 
 
         });
