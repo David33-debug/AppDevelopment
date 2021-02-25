@@ -27,6 +27,10 @@ public class VSWRCalc {
 
     public double return_loss(double VSWR)
     {
+        if(VSWR==1d)
+        {
+            return 0.0d;
+        }
         return Double.parseDouble(df.format(Math.log10((VSWR - 1.0d) / (1.0d + VSWR)) * -20.0d));
     }
 

@@ -12,6 +12,10 @@ public class LinkCalcs {
 
     public double freeSpaceLoss(String input, double distance, double frequency)
     {
+        if(frequency==0 || distance==0)
+        {
+            return 0.0d;
+        }
         distance=unitConvert.normalise(input,distance);
         return Double.parseDouble(df.format(32.5d+(20*Math.log10(distance)+(20*Math.log10(frequency)))));
     }
@@ -33,6 +37,10 @@ public class LinkCalcs {
     }
     public double distanceCalc(double frequency, double fadeMargin, double RxSensitivity, double TxPower, double TxCableLoss, double TxGain, double RxCableLoss, double RxGain)
     {
+        if(frequency==0)
+        {
+            return 0.0d;
+        }
         num1=fadeMargin+RxSensitivity;
         num2=TxPower-TxCableLoss+TxGain;
         num3=(num2-num1+RxGain-RxCableLoss);

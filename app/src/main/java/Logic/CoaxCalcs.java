@@ -31,7 +31,7 @@ public class CoaxCalcs {
         return Double.parseDouble(df.format(length*attenuation));
     }
 
-    public double fetchAttenuation(int row_)//, int column_)
+    public double fetchAttenuation(int row_)
     {
         row=row_;
         return Double.parseDouble(df.format(Double.parseDouble(strArr[row][column])));

@@ -124,11 +124,12 @@ public class fragment_power extends Fragment {
                 {
                     case 1:
                         try{
-                            Double.parseDouble(watts.getText().toString());
+                            Math.log10(Double.parseDouble(watts.getText().toString()));
                         }
                         catch (NumberFormatException e){
                             Toast.makeText(fragment_power.this.getContext(),"Invalid entry",Toast.LENGTH_SHORT).show();
                             watts.setText(String.valueOf(0.0d));
+                            break;
                         }
                         if (BuildFile.FLAVOR.equals(watts.getText().toString())) {
                             Toast.makeText(fragment_power.this.getContext(),"Please enter a value for power",Toast.LENGTH_SHORT).show();
@@ -143,10 +144,11 @@ public class fragment_power extends Fragment {
                         break;
                     case 2:
                         try{
-                            if (BuildFile.FLAVOR.equals(dbmV.getText().toString())) {
+                            Math.log10(Double.parseDouble(dbm.getText().toString()));
+                            if (BuildFile.FLAVOR.equals(dbm.getText().toString())) {
                                 dBm = 0.0d;
                             } else {
-                                dBm = Double.parseDouble(dbmV.getText().toString());
+                                dBm = Double.parseDouble(dbm.getText().toString());
                             }
                             watts.setText(String.valueOf(power.dBm_watt(dBm)));
                             dbmV.setText(String.valueOf(power.dBm_dBmV(dBm)));
@@ -155,12 +157,13 @@ public class fragment_power extends Fragment {
                         }
                         catch (NumberFormatException e){
                             Toast.makeText(fragment_power.this.getContext(),"Invalid entry",Toast.LENGTH_SHORT).show();
+                            dbm.setText(String.valueOf(0.0d));
                             dBm=0.0d;
                         }
                         break;
                     case 3:
                         try {
-                            Double.parseDouble(dbmV.getText().toString());
+                            Math.log10(Double.parseDouble(dbmV.getText().toString()));
                             if (BuildFile.FLAVOR.equals(dbmV.getText().toString())) {
                                 dBmV = 0.0d;
                             } else {
@@ -179,6 +182,7 @@ public class fragment_power extends Fragment {
                         break;
                     case 4:
                         try {
+                            Math.log10(Double.parseDouble(uV.getText().toString()));
                             if (BuildFile.FLAVOR.equals(uV.getText().toString())) {
                                 Volt = 0.0d;
                             } else {
@@ -197,6 +201,7 @@ public class fragment_power extends Fragment {
                         break;
                     case 5:
                         try{
+                            Math.log10(Double.parseDouble(dbW.getText().toString()));
                             if (BuildFile.FLAVOR.equals(dbW.getText().toString())) {
                                 dBW = 0.0d;
                             } else {
