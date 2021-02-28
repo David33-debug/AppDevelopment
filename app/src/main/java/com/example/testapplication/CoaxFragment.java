@@ -1,4 +1,4 @@
-package com.example.testapplication.ui.design;
+package com.example.testapplication;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,12 +12,9 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.example.testapplication.R;
 
 import Logic.CoaxCalcs;
 
@@ -47,35 +44,34 @@ public class CoaxFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root =inflater.inflate(R.layout.fragment_coax, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_coax, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        spin=(Spinner) getView().findViewById(R.id.CoaxSpinner);
-        seek=(SeekBar) getView().findViewById(R.id.seekBar2);
+        spin= getView().findViewById(R.id.CoaxSpinner);
+        seek= getView().findViewById(R.id.seekBar2);
 
-        frequency=(EditText) getView().findViewById(R.id.FrequencyShow);
-        cableLength=(EditText) getView().findViewById(R.id.CableLength);
-        attenuation=(EditText) getView().findViewById(R.id.AttenuationatFrequency);
-        totalLoss=(EditText) getView().findViewById(R.id.TotalLoss);
+        frequency= getView().findViewById(R.id.FrequencyShow);
+        cableLength= getView().findViewById(R.id.CableLength);
+        attenuation= getView().findViewById(R.id.AttenuationatFrequency);
+        totalLoss= getView().findViewById(R.id.TotalLoss);
 
-        manufacturer=(EditText) getView().findViewById(R.id.Manufacturer);
-        innerConductor=(EditText) getView().findViewById(R.id.InnerConductor);
-        Dielectric=(EditText) getView().findViewById(R.id.Dielectric);
-        outerShield1=(EditText) getView().findViewById(R.id.Shield1);
-        outerShield2=(EditText) getView().findViewById(R.id.Shield2);
-        jacket=(EditText) getView().findViewById(R.id.Jacket);
-        jacketTolerance=(EditText) getView().findViewById((R.id.JacketTolerance));
-        oneTimeBendRadius=(EditText) getView().findViewById(R.id.OneTime);
-        repeatedBendRadius=(EditText) getView().findViewById(R.id.Repeated);
-        installation=(EditText) getView().findViewById(R.id.Installation);
-        staticBendRadius=(EditText) getView().findViewById(R.id.Static);
-        dynamicBendRadius=(EditText) getView().findViewById(R.id.Dynamic);
-        maxBend=(EditText) getView().findViewById(R.id.dynamic);
+        manufacturer= getView().findViewById(R.id.Manufacturer);
+        innerConductor= getView().findViewById(R.id.InnerConductor);
+        Dielectric= getView().findViewById(R.id.Dielectric);
+        outerShield1= getView().findViewById(R.id.Shield1);
+        outerShield2= getView().findViewById(R.id.Shield2);
+        jacket= getView().findViewById(R.id.Jacket);
+        jacketTolerance= getView().findViewById((R.id.JacketTolerance));
+        oneTimeBendRadius= getView().findViewById(R.id.OneTime);
+        repeatedBendRadius= getView().findViewById(R.id.Repeated);
+        installation= getView().findViewById(R.id.Installation);
+        staticBendRadius= getView().findViewById(R.id.Static);
+        dynamicBendRadius= getView().findViewById(R.id.Dynamic);
+        maxBend= getView().findViewById(R.id.dynamic);
 
         attenuation.setText("N/A");
 
@@ -95,9 +91,9 @@ public class CoaxFragment extends Fragment {
                     attenuationConst=cable.attenuationLoss_dB_m(number);
 
                     length = Double.parseDouble(cableLength.getText().toString());
-                    totalLoss.setText(Double.toString(length * attenuationConst));
+                    totalLoss.setText(String.valueOf(cable.totalLoss(length,attenuationConst)));
                     if(attenuationConst!=0)
-                        attenuation.setText(Double.toString(attenuationConst));
+                        attenuation.setText(String.valueOf(attenuationConst));
                     else
                         attenuation.setText("N/A");
                 }
@@ -121,7 +117,7 @@ public class CoaxFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (isNum(s.toString())) {
                     length = Double.parseDouble(s.toString());
-                    totalLoss.setText(Double.toString(cable.totalLoss(length,attenuationConst)));//(Double.toString(length * attenuationConst));
+                    totalLoss.setText(String.valueOf(cable.totalLoss(length,attenuationConst)));//(Double.toString(length * attenuationConst));
                 }
                 else
                     Toast.makeText(CoaxFragment.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
@@ -322,8 +318,8 @@ public class CoaxFragment extends Fragment {
                     dynamicBendRadius.setText("NA");
                     maxBend.setText("NA");}
                 attenuationConst = cable.fetchAttenuation(row);//,column);//Double.parseDouble(strArr[row][column]);
-                totalLoss.setText(Double.toString(length * attenuationConst));
-                attenuation.setText(Double.toString(attenuationConst));
+                totalLoss.setText(String.valueOf(cable.totalLoss(length ,attenuationConst)));
+                attenuation.setText(String.valueOf(attenuationConst));
             }
 
             @Override
@@ -334,7 +330,7 @@ public class CoaxFragment extends Fragment {
         seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                frequency.setText(Integer.toString(progress));
+                frequency.setText(String.valueOf(progress));
             }
 
             @Override

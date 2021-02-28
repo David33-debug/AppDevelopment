@@ -1,4 +1,4 @@
-package com.example.testapplication.ui.design;
+package com.example.testapplication;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,19 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.testapplication.R;
 
 import java.text.DecimalFormat;
 
@@ -49,7 +43,6 @@ public class fragment_fresnel extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_fresnel_2, container, false);
-
         return root;
     }
 
@@ -57,30 +50,30 @@ public class fragment_fresnel extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //groupChoice=(RadioGroup)getView().findViewById(R.id.obstacleRadio);
-        distance=(EditText) getView().findViewById(R.id.totalDistance);
-        distance1=(EditText) getView().findViewById(R.id.distance1);
-        distance2=(EditText) getView().findViewById(R.id.distance2);
+        distance= getView().findViewById(R.id.totalDistance);
+        distance1= getView().findViewById(R.id.distance1);
+        distance2= getView().findViewById(R.id.distance2);
 
-        frequency=(EditText)getView().findViewById(R.id.Frequency);
-        heightAnt1=(EditText)getView().findViewById(R.id.heightFirstAntenna);
-        heightAnt2=(EditText)getView().findViewById(R.id.heightSecondAntenna);
+        frequency= getView().findViewById(R.id.Frequency);
+        heightAnt1= getView().findViewById(R.id.heightFirstAntenna);
+        heightAnt2= getView().findViewById(R.id.heightSecondAntenna);
 
-        heightObstruct=(EditText)getView().findViewById(R.id.obstructionHeight);
+        heightObstruct= getView().findViewById(R.id.obstructionHeight);
 
-        FresnelRadius=(EditText)getView().findViewById(R.id.freznelRadius);
-        fresnelRadiusAtObstruction=(EditText) getView().findViewById(R.id.fresnelRadiusAtObstruction);
-        LossClearance=(EditText)getView().findViewById(R.id.LossClearance);
-        RelativeClearance=(EditText)getView().findViewById(R.id.relativeClearance60);
-        radius60=(EditText)getView().findViewById(R.id.relativeClearance60);
+        FresnelRadius= getView().findViewById(R.id.freznelRadius);
+        fresnelRadiusAtObstruction= getView().findViewById(R.id.fresnelRadiusAtObstruction);
+        LossClearance= getView().findViewById(R.id.LossClearance);
+        //RelativeClearance= getView().findViewById(R.id.relativeClearance60);
+        radius60= getView().findViewById(R.id.relativeClearance60);
 
-        earthToClear=(EditText)getView().findViewById(R.id.Clearance_earth_Obstacle);
-        clearObstacle=(EditText)getView().findViewById(R.id.Clearance_Obstacle);
-        clearObstacleFZ=(EditText)getView().findViewById(R.id.Clearance_Obstacle_fz);
+        earthToClear= getView().findViewById(R.id.Clearance_earth_Obstacle);
+        clearObstacle= getView().findViewById(R.id.Clearance_Obstacle);
+        clearObstacleFZ= getView().findViewById(R.id.Clearance_Obstacle_fz);
 
         spin1=getView().findViewById(R.id.spinner10);
         spin2=getView().findViewById(R.id.spinner11);
 
-        calculate=(Button) getView().findViewById(R.id.buttonObstacle);
+        calculate= getView().findViewById(R.id.buttonObstacle);
 
         earthToClear.setEnabled(false);
         earthToClear.setTextColor(Color.RED);
@@ -94,8 +87,8 @@ public class fragment_fresnel extends Fragment {
         FresnelRadius.setTextColor(Color.RED);
         LossClearance.setEnabled(false);
         LossClearance.setTextColor(Color.RED);
-        RelativeClearance.setEnabled(false);
-        RelativeClearance.setTextColor(Color.RED);
+        radius60.setEnabled(false);
+        radius60.setTextColor(Color.RED);
 
         ArrayAdapter<CharSequence> adapter= ArrayAdapter.createFromResource(fragment_fresnel.this.getContext() , R.array.distances, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

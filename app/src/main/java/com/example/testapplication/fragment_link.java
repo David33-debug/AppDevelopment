@@ -1,4 +1,4 @@
-package com.example.testapplication.ui.design;
+package com.example.testapplication;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,17 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.testapplication.R;
+import androidx.fragment.app.Fragment;
 
 import Logic.CoaxCalcs;
 import Logic.LinkCalcs;
 import Logic.UnitsDistance;
-
-import static java.lang.Math.log10;
 
 public class fragment_link extends Fragment {
     TextView unit1,unit2;
@@ -37,7 +32,7 @@ public class fragment_link extends Fragment {
     EditText distance, frequency, fadingMargin, transmitPower;
     EditText locationAGain, LocationATxPower, LocationAConnectorLoss, LocationACoaxCableLoss,cable1Length,cable2Length;
     EditText locationBGain, LocationBRxSensitivity, LocationBConnectorLoss, LocationBCoaxCableLoss;
-    EditText TotalCoaxLoss, FreeSpacePathLoss,ERP,MaxPermissibleCoaxLoss, MaxPermissibleFreeSpacePathLoss, EstimatedReceivedSignalAtB;
+    EditText TotalCoaxLoss, FreeSpacePathLoss,ERP, EstimatedReceivedSignalAtB;
     RadioButton Distance, TxPower, FadeMargin;
     RadioButton chooseCoax1,enterCoax1;
     RadioButton chooseCoax2,enterCoax2;
@@ -51,115 +46,82 @@ public class fragment_link extends Fragment {
     UnitsDistance unitConv=new UnitsDistance();
     LinkCalcs linkB=new LinkCalcs();
 
-    int row=0,column=0;
+    int row=0;//,column=0;
 
     double cableAttenuation=0,cableAttenuation1=0;
     double cableLength1=0,cableLength2=0;
     double CoaxLossTx=0,CoaxLossRx=0;
 
-
-    double powerReceived,powerReceived1;
-    double FreeSpaceLoss;
     double distanceKm=0;
     double frequencyMHz=0;
     double gainTransmitter=0;
     double gainReceiver=0;
-    double powerTransmitted=0;
-
-    double RxConnectorDouble;
-    double TxConnectorDouble;
 
     double TransmitPower;
     double fadeMargin;
 
-    double TxGainDouble;
-    double RxGainDouble;
-
     double RxSensitivity;
-
-    double totalCoaxDouble;
-    double freeSpaceDouble;
-
-    double checking1;
-    double checking2;
-    double answerDoubleGain;
-    double answerDoublePathLoss;
-    double recieverDouble;
-    double answerDoubleCoax;
-    double answerB;
-    double answerA;
-
-    public boolean isNum(String text) {
-        try {
-            Double.parseDouble(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_link_2, container, false);
 
-        return root;
+        return inflater.inflate(R.layout.fragment_link_2, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unit1=(TextView)getView().findViewById(R.id.textViewUnit1);
-        unit2=(TextView)getView().findViewById(R.id.textViewUnit2);
+        unit1= getView().findViewById(R.id.textViewUnit1);
+        unit2= getView().findViewById(R.id.textViewUnit2);
         unit1.setText("(m)");
         unit2.setText("(m)");
 
-        radioCoax1=(RadioGroup)getView().findViewById(R.id.radioCoax1);
-        radioCoax2=(RadioGroup)getView().findViewById(R.id.radioCoax2);
-        outputCalc=(RadioGroup) getView().findViewById(R.id.radioOutput);
+        radioCoax1= getView().findViewById(R.id.radioCoax1);
+        radioCoax2= getView().findViewById(R.id.radioCoax2);
+        outputCalc= getView().findViewById(R.id.radioOutput);
 
-        chooseCoax1=(RadioButton)getView().findViewById(R.id.CoaxChoice1);
+        chooseCoax1= getView().findViewById(R.id.CoaxChoice1);
         chooseCoax1.setChecked(true);
-        enterCoax1=(RadioButton)getView().findViewById(R.id.Title_CoaxTransmit);
+        enterCoax1= getView().findViewById(R.id.Title_CoaxTransmit);
 
 
-        chooseCoax2=(RadioButton)getView().findViewById(R.id.radioButton10);
+        chooseCoax2= getView().findViewById(R.id.radioButton10);
         chooseCoax2.setChecked(true);
-        enterCoax2=(RadioButton)getView().findViewById(R.id.radioButton11);
+        enterCoax2= getView().findViewById(R.id.radioButton11);
 
-        Distance=(RadioButton) getView().findViewById(R.id.radioButton5);
-        FadeMargin=(RadioButton) getView().findViewById(R.id.radioButton6);
-        TxPower=(RadioButton) getView().findViewById(R.id.radioButton7);
+        Distance= getView().findViewById(R.id.radioButton5);
+        FadeMargin= getView().findViewById(R.id.radioButton6);
+        TxPower= getView().findViewById(R.id.radioButton7);
 
-        transmitPower=(EditText) getView().findViewById(R.id.TxPower);
-        calculate=(Button) getView().findViewById(R.id.button);
-        distance=(EditText) getView().findViewById(R.id.Distance);
-        fadingMargin=(EditText) getView().findViewById(R.id.FadingMargin);
+        transmitPower= getView().findViewById(R.id.TxPower);
+        calculate= getView().findViewById(R.id.button);
+        distance= getView().findViewById(R.id.Distance);
+        fadingMargin= getView().findViewById(R.id.FadingMargin);
 
-        cable1Length=(EditText) getView().findViewById(R.id.Cable1Input);
-        cable2Length=(EditText) getView().findViewById(R.id.Cable2Input);
+        cable1Length= getView().findViewById(R.id.Cable1Input);
+        cable2Length= getView().findViewById(R.id.Cable2Input);
 
-        frequency=(EditText) getView().findViewById(R.id.Frequency);
-        locationAGain=(EditText) getView().findViewById(R.id.GainTransmitter);
-        LocationATxPower=(EditText) getView().findViewById(R.id.TxTransmit);
-        LocationAConnectorLoss=(EditText) getView().findViewById(R.id.ConnectorTransmit);
-        LocationACoaxCableLoss=(EditText) getView().findViewById(R.id.TransmitCoax);
+        frequency= getView().findViewById(R.id.Frequency);
+        locationAGain= getView().findViewById(R.id.GainTransmitter);
+        LocationATxPower= getView().findViewById(R.id.TxTransmit);
+        LocationAConnectorLoss= getView().findViewById(R.id.ConnectorTransmit);
+        LocationACoaxCableLoss= getView().findViewById(R.id.TransmitCoax);
 
-        locationBGain=(EditText) getView().findViewById(R.id.GainReciever);
-        LocationBRxSensitivity=(EditText) getView().findViewById(R.id.RxReciever);
-        LocationBConnectorLoss=(EditText) getView().findViewById(R.id.ConnectorReciever);
-        LocationBCoaxCableLoss=(EditText) getView().findViewById(R.id.RecieverCoax);
+        locationBGain= getView().findViewById(R.id.GainReciever);
+        LocationBRxSensitivity= getView().findViewById(R.id.RxReciever);
+        LocationBConnectorLoss= getView().findViewById(R.id.ConnectorReciever);
+        LocationBCoaxCableLoss= getView().findViewById(R.id.RecieverCoax);
 
-        TotalCoaxLoss=(EditText) getView().findViewById(R.id.TotalCoax);
-        FreeSpacePathLoss=(EditText) getView().findViewById(R.id.FreeSpaceLoss);
-        ERP=(EditText) getView().findViewById(R.id.ERPToDisplay);
-        MaxPermissibleCoaxLoss=(EditText) getView().findViewById(R.id.maxACoax);
-        MaxPermissibleFreeSpacePathLoss=(EditText) getView().findViewById(R.id.maxFreeSpaceLoss);
-        EstimatedReceivedSignalAtB=(EditText)getView().findViewById(R.id.Bsignal);
+        TotalCoaxLoss= getView().findViewById(R.id.TotalCoax);
+        FreeSpacePathLoss= getView().findViewById(R.id.FreeSpaceLoss);
+        ERP= getView().findViewById(R.id.ERPToDisplay);
 
-        distance_unit=(Spinner)getView().findViewById(R.id.spinnerChoice_distance);
-        coax1=(Spinner)getView().findViewById(R.id.spinnerChoice);
-        coax2=(Spinner)getView().findViewById(R.id.spinnerChoice1);
+        EstimatedReceivedSignalAtB= getView().findViewById(R.id.Bsignal);
+
+        distance_unit= getView().findViewById(R.id.spinnerChoice_distance);
+        coax1= getView().findViewById(R.id.spinnerChoice);
+        coax2= getView().findViewById(R.id.spinnerChoice1);
 
         TotalCoaxLoss.setEnabled(false);
         TotalCoaxLoss.setTextColor(Color.RED);
@@ -168,10 +130,7 @@ public class fragment_link extends Fragment {
 
         ERP.setEnabled(false);
         ERP.setTextColor(Color.RED);
-        MaxPermissibleCoaxLoss.setEnabled(false);
-        MaxPermissibleCoaxLoss.setTextColor(Color.RED);
-        MaxPermissibleFreeSpacePathLoss.setEnabled(false);
-        MaxPermissibleFreeSpacePathLoss.setTextColor(Color.RED);
+
         EstimatedReceivedSignalAtB.setEnabled(false);
         EstimatedReceivedSignalAtB.setTextColor(Color.RED);
 
@@ -217,28 +176,41 @@ public class fragment_link extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 itemCoax1=parent.getItemAtPosition(position).toString();
-                if(itemCoax1.equals("RG 174")){
-                    row=0;}
-                else if(itemCoax1.equals("RG 174_U")){
-                    row=1;}
-                else if (itemCoax1.equals("LMR 195_FR")){
-                    row=2;}
-                else if (itemCoax1.equals("HDF 195")){
-                    row=3;}
-                else if(itemCoax1.equals("LMR 200")){
-                    row=4;}
-                else if(itemCoax1.equals("LMR 400")){
-                    row=5;}
-                else if(itemCoax1.equals("RG 316")){
-                    row=6;}
-                else if(itemCoax1.equals("RG 58")){
-                    row=7;}
-                else if(itemCoax1.equals("H 155A00")){
-                    row=8;}
-                else if(itemCoax1.equals("Enviroflex 316_D")){
-                    row=9;}
-                else if(itemCoax1.equals("LEONI Dacar 302")){
-                    row=10;}
+                switch (itemCoax1) {
+                    case "RG 174":
+                        row = 0;
+                        break;
+                    case "RG 174_U":
+                        row = 1;
+                        break;
+                    case "LMR 195_FR":
+                        row = 2;
+                        break;
+                    case "HDF 195":
+                        row = 3;
+                        break;
+                    case "LMR 200":
+                        row = 4;
+                        break;
+                    case "LMR 400":
+                        row = 5;
+                        break;
+                    case "RG 316":
+                        row = 6;
+                        break;
+                    case "RG 58":
+                        row = 7;
+                        break;
+                    case "H 155A00":
+                        row = 8;
+                        break;
+                    case "Enviroflex 316_D":
+                        row = 9;
+                        break;
+                    case "LEONI Dacar 302":
+                        row = 10;
+                        break;
+                }
                 cableAttenuation=coaxObj1.fetchAttenuation(row);
             }
 
@@ -256,28 +228,41 @@ public class fragment_link extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 itemCoax2=parent.getItemAtPosition(position).toString();
-                if(itemCoax2.equals("RG 174")){
-                    row=0;}
-                else if(itemCoax2.equals("RG 174_U")){
-                    row=1;}
-                else if (itemCoax2.equals("LMR 195_FR")){
-                    row=2;}
-                else if (itemCoax2.equals("HDF 195")){
-                    row=3;}
-                else if(itemCoax2.equals("LMR 200")){
-                    row=4;}
-                else if(itemCoax2.equals("LMR 400")){
-                    row=5;}
-                else if(itemCoax2.equals("RG 316")){
-                    row=6;}
-                else if(itemCoax2.equals("RG 58")){
-                    row=7;}
-                else if(itemCoax2.equals("H 155A00")){
-                    row=8;}
-                else if(itemCoax2.equals("Enviroflex 316_D")){
-                    row=9;}
-                else if(itemCoax2.equals("LEONI Dacar 302")){
-                    row=10;}
+                switch (itemCoax2) {
+                    case "RG 174":
+                        row = 0;
+                        break;
+                    case "RG 174_U":
+                        row = 1;
+                        break;
+                    case "LMR 195_FR":
+                        row = 2;
+                        break;
+                    case "HDF 195":
+                        row = 3;
+                        break;
+                    case "LMR 200":
+                        row = 4;
+                        break;
+                    case "LMR 400":
+                        row = 5;
+                        break;
+                    case "RG 316":
+                        row = 6;
+                        break;
+                    case "RG 58":
+                        row = 7;
+                        break;
+                    case "H 155A00":
+                        row = 8;
+                        break;
+                    case "Enviroflex 316_D":
+                        row = 9;
+                        break;
+                    case "LEONI Dacar 302":
+                        row = 10;
+                        break;
+                }
                 cableAttenuation1=coaxObj2.fetchAttenuation(row);
             }
 
@@ -604,15 +589,10 @@ public class fragment_link extends Fragment {
                     break;
             }
             ERP.setText(String.valueOf(linkB.erp(TransmitPower,gainTransmitter,CoaxLossTx)));
-            /*checking1 = txRecieveDouble - rxTransmitDouble;*/
+
             TotalCoaxLoss.setText(String.valueOf(CoaxLossRx+CoaxLossTx));
             FreeSpacePathLoss.setText(String.valueOf(linkB.freeSpaceLoss(itemDistance,distanceKm,frequencyMHz)));
             EstimatedReceivedSignalAtB.setText(String.valueOf(linkB.RxReceiveStrength(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx)));
-
-            /*
-            MaxPermissibleCoaxLoss.setText(answerDoubleCoax = (((((((checking1 - recieveConnectorDouble) - recieverDouble) - transmitConnectorDouble) + ancillaryDouble) - fadingDouble) + recieverGainDouble) + transmitGainDouble) - freeSpaceDouble);
-            MaxPermissibleFreeSpacePathLoss.setText((((((checking1 - totalCoaxDouble) - recieveConnectorDouble) - transmitConnectorDouble) + ancillaryDouble) - fadingDouble) + transmitGainDouble + recieverGainDouble;
-            */
 
 
 

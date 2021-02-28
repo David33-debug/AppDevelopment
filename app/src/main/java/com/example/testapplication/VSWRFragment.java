@@ -1,4 +1,4 @@
-package com.example.testapplication.ui.design;
+package com.example.testapplication;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,11 +19,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.testapplication.R;
+import androidx.fragment.app.Fragment;
 
 import Logic.CoaxCalcs;
 import Logic.UnitsDistance;
@@ -87,11 +84,6 @@ public class VSWRFragment extends Fragment {
         powerAtAntenna = (EditText) getView().findViewById(R.id.PowerAtAntenna);
         reflectedPower = (EditText) getView().findViewById(R.id.reflectedPower);
 
-        vswrIn.setText(BuildFile.FLAVOR);
-        //cableLossPerMeter.setText(BuildFile.FLAVOR);
-        //cableLength.setText(BuildFile.FLAVOR);
-        inputPower.setText(BuildFile.FLAVOR);
-
         calculate = (Button) getView().findViewById(R.id.buttonVSWR);
 
         coaxRadio=(RadioGroup) getView().findViewById(R.id.radioCable);
@@ -146,6 +138,7 @@ public class VSWRFragment extends Fragment {
                     choosing=0;
                     lengthCable.setEnabled(true);
                     CoaxCableLoss.setEnabled(false);
+                    CoaxCableLoss.setText("0");
                 }
                 else if(checkedId==R.id.CoaxTransmit)
                 {
