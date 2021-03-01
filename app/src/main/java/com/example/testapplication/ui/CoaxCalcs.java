@@ -1,9 +1,9 @@
-package Logic;
+package com.example.testapplication.ui;
 
 import java.text.DecimalFormat;
 
 public class CoaxCalcs {
-    DecimalFormat df = new DecimalFormat("#.000");
+
     int column,row;
     double value;
     String [][] strArr={{"0", "0.2756", "0.391533333", "0.507466667", "0.6234", "0.694483333", "0.765566667", "0.83665", "0.907733333", "0.978816667", "1.0499", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"},
@@ -28,13 +28,13 @@ public class CoaxCalcs {
 
     public double totalLoss(double length, double attenuation)
     {
-        return Double.parseDouble(df.format(length*attenuation));
+        return (length*attenuation);
     }
 
     public double fetchAttenuation(int row_)
     {
         row=row_;
-        return Double.parseDouble(df.format(Double.parseDouble(strArr[row][column])));
+        return (Double.parseDouble(strArr[row][column]));
     }
 
     public double attenuationLoss_dB_m(double number)
@@ -205,7 +205,7 @@ public class CoaxCalcs {
         } else if (number >= 8000.0d && number < 8100.0d) {
             column = 80;
         }
-        value = Double.parseDouble(df.format(Double.parseDouble(strArr[row][column])));
+        value = (Double.parseDouble(strArr[row][column]));
 
         return value;
     }

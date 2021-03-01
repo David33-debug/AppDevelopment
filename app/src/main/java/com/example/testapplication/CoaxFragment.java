@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import Logic.CoaxCalcs;
+import com.example.testapplication.ui.CoaxCalcs;
+
+import java.text.DecimalFormat;
 
 public class CoaxFragment extends Fragment {
     Spinner spin;
@@ -41,7 +43,6 @@ public class CoaxFragment extends Fragment {
         }
     }
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_coax, container, false);
@@ -58,6 +59,7 @@ public class CoaxFragment extends Fragment {
         cableLength= getView().findViewById(R.id.CableLength);
         attenuation= getView().findViewById(R.id.AttenuationatFrequency);
         totalLoss= getView().findViewById(R.id.TotalLoss);
+        totalLoss.setEnabled(false);
 
         manufacturer= getView().findViewById(R.id.Manufacturer);
         innerConductor= getView().findViewById(R.id.InnerConductor);
@@ -91,9 +93,9 @@ public class CoaxFragment extends Fragment {
                     attenuationConst=cable.attenuationLoss_dB_m(number);
 
                     length = Double.parseDouble(cableLength.getText().toString());
-                    totalLoss.setText(String.valueOf(cable.totalLoss(length,attenuationConst)));
+                    totalLoss.setText(String.format("%.3f",cable.totalLoss(length,attenuationConst)));
                     if(attenuationConst!=0)
-                        attenuation.setText(String.valueOf(attenuationConst));
+                        attenuation.setText(String.format("%.3f",attenuationConst));
                     else
                         attenuation.setText("N/A");
                 }
@@ -117,7 +119,7 @@ public class CoaxFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (isNum(s.toString())) {
                     length = Double.parseDouble(s.toString());
-                    totalLoss.setText(String.valueOf(cable.totalLoss(length,attenuationConst)));//(Double.toString(length * attenuationConst));
+                    totalLoss.setText(String.format("%.3f",cable.totalLoss(length,attenuationConst)));//(Double.toString(length * attenuationConst));
                 }
                 else
                     Toast.makeText(CoaxFragment.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();
@@ -318,7 +320,7 @@ public class CoaxFragment extends Fragment {
                     dynamicBendRadius.setText("NA");
                     maxBend.setText("NA");}
                 attenuationConst = cable.fetchAttenuation(row);//,column);//Double.parseDouble(strArr[row][column]);
-                totalLoss.setText(String.valueOf(cable.totalLoss(length ,attenuationConst)));
+                totalLoss.setText(String.format("%.3f",cable.totalLoss(length ,attenuationConst)));
                 attenuation.setText(String.valueOf(attenuationConst));
             }
 

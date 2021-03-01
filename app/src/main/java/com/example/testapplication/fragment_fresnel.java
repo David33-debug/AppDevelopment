@@ -16,11 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.testapplication.ui.FresnelCalcs;
+import com.example.testapplication.ui.UnitsDistance;
 
 import java.text.DecimalFormat;
-
-import Logic.FresnelCalcs;
-import Logic.UnitsDistance;
 
 public class fragment_fresnel extends Fragment {
     DecimalFormat df = new DecimalFormat("#.000");
@@ -132,27 +131,27 @@ public class fragment_fresnel extends Fragment {
             //fresnel_zone = Double.parseDouble(item);
             fresnel_Radius_max=fresnel.max_clearance(totalDistanceDouble,frequencyDouble,item,item2);
 
-            FresnelRadius.setText(String.valueOf(fresnel_Radius_max));
+            FresnelRadius.setText(String.format("%.3f",fresnel_Radius_max));
             /////////////////////////////////////////////////////////////
             fresnel_Radius = fresnel.fresnel_radius(1,totalDistanceDouble,distanceFirst,distanceSecond,frequencyDouble,item,item2);//Math.sqrt(((((fresnel_zone * totalDistanceDouble) * totalDistanceDouble) * 0.25d) * (speedOfLight / frequencyDouble)) / totalDistanceDouble);
             if(fresnel_Radius==0.0d)
             {
                 Toast.makeText(fragment_fresnel.this.getContext(),"1 and d2 must be greater than the wavelength of the signal",Toast.LENGTH_SHORT).show();
             }
-            fresnelRadiusAtObstruction.setText(String.valueOf(fresnel_Radius));
+            fresnelRadiusAtObstruction.setText(String.format("%.3f",fresnel_Radius));
             ///////////////////////////////////////////////////////////////
-            radius60.setText(String.valueOf(Double.parseDouble(df.format(fresnel_Radius*(0.6)))));
+            radius60.setText(String.format("%.3f",fresnel_Radius*(0.6)));
 
             heightFirst = Double.parseDouble(heightAnt1.getText().toString());
             heightSecond = Double.parseDouble(heightAnt2.getText().toString());
             obstacleHeight = Double.parseDouble(heightObstruct.getText().toString());
 
             loss_clearance =fresnel.loss_clearance(heightSecond,heightFirst,distanceFirst,totalDistanceDouble,distanceSecond,1.33d,obstacleHeight,item,item2);//((((heightSecond - heightFirst) * distanceFirst) / totalDistanceDouble) + heightFirst) - (((distanceFirst / 1000.0d) * (distanceSecond / 1000.0d)) / (12.74d * constant))) - obstacleHeight;
-            LossClearance.setText(String.valueOf(loss_clearance));
+            LossClearance.setText(String.format("%.3f",loss_clearance));
 
-            earthToClear.setText(String.valueOf(fresnel.heightOfAntToClearEarth_forSameHeightAnt(totalDistanceDouble,fresnel_Radius_max,item,item2)));
-            clearObstacle.setText(String.valueOf(fresnel.ClearanceBetweenOandFZ(heightFirst,distanceFirst,totalDistanceDouble,heightSecond,item,item2,fresnel_Radius)));
-            clearObstacleFZ.setText(String.valueOf(Double.parseDouble(df.format(fresnel.ClearanceBetweenOandFZ(heightFirst,distanceFirst,totalDistanceDouble,heightSecond,item,item2,fresnel_Radius)-obstacleHeight))));
+            earthToClear.setText(String.format("%.3f",fresnel.heightOfAntToClearEarth_forSameHeightAnt(totalDistanceDouble,fresnel_Radius_max,item,item2)));
+            clearObstacle.setText(String.format("%.3f",fresnel.ClearanceBetweenOandFZ(heightFirst,distanceFirst,totalDistanceDouble,heightSecond,item,item2,fresnel_Radius)));
+            clearObstacleFZ.setText(String.format("%.3f",fresnel.ClearanceBetweenOandFZ(heightFirst,distanceFirst,totalDistanceDouble,heightSecond,item,item2,fresnel_Radius)-obstacleHeight));
 
             //relative_clearance=fresnel.relative_clearance(fresnel_Radius,loss_clearance);
            // RelativeClearance.setText(String.valueOf(relative_clearance));//loss_clearance - (0.6d * fresnel_Radius)));

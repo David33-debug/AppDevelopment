@@ -22,9 +22,9 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 
-import Logic.CoaxCalcs;
-import Logic.UnitsDistance;
-import Logic.VSWRCalc;
+import com.example.testapplication.ui.CoaxCalcs;
+import com.example.testapplication.ui.UnitsDistance;
+import com.example.testapplication.ui.VSWRCalc;
 
 public class VSWRFragment extends Fragment {
 
@@ -47,10 +47,6 @@ public class VSWRFragment extends Fragment {
     double cableAttenuation;
     double freq;
 
-    CoaxCalcs cableCalc=new CoaxCalcs();
-    UnitsDistance unitConv=new UnitsDistance();
-    VSWRCalc vswrCalcs= new VSWRCalc();
-
     public boolean isNum(String text)
     {
         try {
@@ -66,13 +62,17 @@ public class VSWRFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_vswr, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_vswr, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        CoaxCalcs cableCalc=new CoaxCalcs();
+        UnitsDistance unitConv=new UnitsDistance();
+        VSWRCalc vswrCalcs= new VSWRCalc();
+
 
         vswrIn = (EditText) getView().findViewById(R.id.AntennaVSWR);
         inputPower = (EditText) getView().findViewById(R.id.inputPower);
@@ -122,7 +122,7 @@ public class VSWRFragment extends Fragment {
                     } catch (NumberFormatException e) {
                         frequency.setText(BuildFile.FLAVOR);
                     }
-                    cableAttenuation=cableCalc.attenuationLoss_dB_m(freq);
+                    //cableAttenuation=cableCalc.attenuationLoss_dB_m(freq);
                 }
             }
 
@@ -204,7 +204,7 @@ public class VSWRFragment extends Fragment {
                     row=9;}
                 else if(itemCoax1.equals("LEONI Dacar 302")){
                     row=10;}
-                cableAttenuation=cableCalc.fetchAttenuation(row);
+                //cableAttenuation=cableCalc.fetchAttenuation(row);
             }
 
             @Override
@@ -250,80 +250,77 @@ public class VSWRFragment extends Fragment {
             }
         });
 
-        calculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isNum(vswrIn.getText().toString()))
-                {
-                    Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!isNum(inputPower.getText().toString()))
-                {
-                    Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!isNum(frequency.getText().toString()))
-                {
-                    Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!isNum(lengthCable.getText().toString()) && (choosing==0))
-                {
-                    Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!isNum(CoaxCableLoss.getText().toString()) && (choosing==1))
-                {
-                    Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                    cable=Double.parseDouble(lengthCable.getText().toString());
-                    if(choice==1)
-                    {
-                        cable=unitConv.normalise(itemDistance,cable);
-                    }
-                    if(choosing==0){
-                        coaxLoss=cable*cableAttenuation;
-                        //totalCoaxLoss = vswrCalcs.coax_loss(coaxLoss,cable);
-                    }
-                    else if(choosing==1)
-                    {
-                        coaxLoss=Double.parseDouble(CoaxCableLoss.getText().toString());
-                        //totalCoaxLoss = vswrCalcs.coax_loss(coaxLoss,cable);
-                    }
-
-                    inPower=Double.parseDouble(inputPower.getText().toString());
-                    vswr=Double.parseDouble(vswrIn.getText().toString());
-
-                    //using OOP
-
-
-                    //Using OOP Class
-                    powerAntenna=vswrCalcs.pow_received_at_ant(inPower,coaxLoss);
-                    powerAtAntenna.setText(String.valueOf(powerAntenna));
-
-                    feederLoss.setText(String.valueOf(coaxLoss));
-
-                    //using OOP
-                    antennaREflected = vswrCalcs.ant_reflected_power(vswr,powerAntenna);
-
-                    reflectedPower.setText(String.valueOf(antennaREflected));
-
-                    //using OOP
-                    powerTransmittedByAnt=vswrCalcs.power_transmitted_by_antenna_watts(vswr,antennaREflected);
-                    //to be recalculated;
-                    // totalLoss=vswrCalcs.total_power_loss(coaxLoss,antennaREflected);
-
-                    transmitterReflected = antennaREflected / Math.pow(10.0d, coaxLoss / 10.0d);
-
-                    finalVSWRDouble = vswrCalcs.vswr_at_transmitter(transmitterReflected,inPower);
-
-                    vswrOut.setText(String.valueOf(finalVSWRDouble));
-
-                    returnLoss.setText(String.valueOf(vswrCalcs.return_loss(vswr)));
-
+        calculate.setOnClickListener(v -> {
+            if(!isNum(vswrIn.getText().toString()))
+            {
+                Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
+                return;
             }
+            if(!isNum(inputPower.getText().toString()))
+            {
+                Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(!isNum(frequency.getText().toString()))
+            {
+                Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(!isNum(lengthCable.getText().toString()) && (choosing==0))
+            {
+                Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(!isNum(CoaxCableLoss.getText().toString()) && (choosing==1))
+            {
+                Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
+                return;
+            }
+                cable=Double.parseDouble(lengthCable.getText().toString());
+                if(choice==1)
+                {
+                    cable=unitConv.normalise(itemDistance,cable);
+                }
+                if(choosing==0){
+                    coaxLoss=cable*cableAttenuation;
+                    //totalCoaxLoss = vswrCalcs.coax_loss(coaxLoss,cable);
+                }
+                else if(choosing==1)
+                {
+                    coaxLoss=Double.parseDouble(CoaxCableLoss.getText().toString());
+                    //totalCoaxLoss = vswrCalcs.coax_loss(coaxLoss,cable);
+                }
+
+                inPower=Double.parseDouble(inputPower.getText().toString());
+                vswr=Double.parseDouble(vswrIn.getText().toString());
+
+                //using OOP
+
+
+                //Using OOP Class
+                powerAntenna=vswrCalcs.pow_received_at_ant(inPower,coaxLoss);
+                powerAtAntenna.setText(String.format("%.3f",powerAntenna));
+
+                feederLoss.setText(String.format("%.3f",coaxLoss));
+
+                //using OOP
+                antennaREflected = vswrCalcs.ant_reflected_power(vswr,powerAntenna);
+
+                reflectedPower.setText(String.format("%.3f",antennaREflected));
+
+                //using OOP
+                powerTransmittedByAnt=vswrCalcs.power_transmitted_by_antenna_watts(vswr,antennaREflected);
+                //to be recalculated;
+                // totalLoss=vswrCalcs.total_power_loss(coaxLoss,antennaREflected);
+
+                transmitterReflected = antennaREflected / Math.pow(10.0d, coaxLoss / 10.0d);
+
+                finalVSWRDouble = vswrCalcs.vswr_at_transmitter(transmitterReflected,inPower);
+
+                vswrOut.setText(String.valueOf(finalVSWRDouble));
+
+                returnLoss.setText(String.format("%.3f",vswrCalcs.return_loss(vswr)));
+
         });
 
     }

@@ -14,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import Logic.PowCalculations;
+import com.example.testapplication.ui.PowCalculations;
+
+import java.text.DecimalFormat;
+
 
 public class fragment_power extends Fragment {
     EditText watts, dbm,dbmV,uV,dbW;
@@ -25,7 +28,9 @@ public class fragment_power extends Fragment {
     double test;
     double dBmV,dBW,Volt,Wt,dBm;
 
-    PowCalculations power=new PowCalculations();
+    PowCalculations power= new PowCalculations();
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class fragment_power extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         calculate= getView().findViewById(R.id.buttonPower);
         clear= getView().findViewById(R.id.buttonClear);
@@ -105,105 +111,56 @@ public class fragment_power extends Fragment {
                 dbmV.setEnabled(false);
                 uV.setEnabled(false);
                 dbW.setEnabled(true);
+                if(isNum("100"))
+                {
+                    Toast.makeText(fragment_power.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
+                }
+                dbW.setText(String.format("%.3f",dBm_watt(0)));
+
             }
         });
 
         calculate.setOnClickListener(v -> {
+
             switch(n)
             {
                 case 1:
-                    try{
-                        test=Math.log10(Double.parseDouble(watts.getText().toString()));
-                    }
-                    catch (NumberFormatException e){
-                        Toast.makeText(fragment_power.this.getContext(),"Invalid entry",Toast.LENGTH_SHORT).show();
-                        watts.setText(String.valueOf(0.0d));
-                        break;
-                    }
-                    if ("".equals(watts.getText().toString())) {
-                        Toast.makeText(fragment_power.this.getContext(),"Please enter a value for power",Toast.LENGTH_SHORT).show();
-                        Wt = 0.0d;
-                    } else {
-                        Wt = Double.parseDouble(watts.getText().toString());
-                    }
-                    dbm.setText(String.valueOf(power.watts_dBm(Wt)));
-                    dbmV.setText(String.valueOf(power.watts_dBmV(Wt)));
-                    uV.setText(String.valueOf(power.watts_microVolt(Wt)));
-                    dbW.setText(String.valueOf(power.watts_dBW(Wt)));
+                        Wt=Double.parseDouble(watts.getText().toString());
+                        //test = Math.log10(Wt);
+                        dbm.setText(String.format("%.3f",watts_dBm(Wt)));
+                        dbmV.setText(String.format("%.3f",watts_dBmV(Wt)));
+                        uV.setText(String.format("%.3f",watts_microVolt(Wt)));
+                        dbW.setText(String.format("%.3f",watts_dBW(Wt)));
                     break;
                 case 2:
-                    try{
-                        test=Math.log10(Double.parseDouble(dbm.getText().toString()));
-                        if ("".equals(dbm.getText().toString())) {
-                            dBm = 0.0d;
-                        } else {
-                            dBm = Double.parseDouble(dbm.getText().toString());
-                        }
-                        watts.setText(String.valueOf(power.dBm_watt(dBm)));
-                        dbmV.setText(String.valueOf(power.dBm_dBmV(dBm)));
-                        uV.setText(String.valueOf(power.dBm_microVolt(dBm)));
-                        dbW.setText(String.valueOf(power.dBm_dBW(dBm)));
-                    }
-                    catch (NumberFormatException e){
-                        Toast.makeText(fragment_power.this.getContext(),"Invalid entry",Toast.LENGTH_SHORT).show();
-                        dbm.setText(String.valueOf(0.0d));
-                        dBm=0.0d;
-                    }
+                        dBm=Double.parseDouble(dbm.getText().toString());
+                        watts.setText(String.format("%.3f",dBm_watt(test)));
+                        dbmV.setText(String.format("%.3f",dBm_dBmV(test)));
+                        uV.setText(String.format("%.3f",dBm_microVolt(test)));
+                        dbW.setText(String.format("%.3f",dBm_dBW(test)));
                     break;
                 case 3:
-                    try {
-                        test=Math.log10(Double.parseDouble(dbmV.getText().toString()));
-                        if ("".equals(dbmV.getText().toString())) {
-                            dBmV = 0.0d;
-                        } else {
-                            dBmV = Double.parseDouble(dbmV.getText().toString());
-                        }
-                        watts.setText(String.valueOf(power.dBmV_watt(dBmV)));
-                        dbm.setText(String.valueOf(power.dBmV_dBm(dBmV)));
-                        uV.setText(String.valueOf(power.dBmV_microVolt(dBmV)));
-                        dbW.setText(String.valueOf(power.dBmV_dBW(dBmV)));
-                    }
-                    catch(NumberFormatException e)
-                    {
-                        Toast.makeText(fragment_power.this.getContext(),"Invalid entry",Toast.LENGTH_SHORT).show();
-                        dbmV.setText(String.valueOf(0.0d));
-                    }
+                        dBmV=Double.parseDouble(dbmV.getText().toString());
+                        watts.setText(String.format("%.3f",dBmV_watt(dBmV)));
+                        dbm.setText(String.format("%.3f",dBmV_dBm(dBmV)));
+                        uV.setText(String.format("%.3f",dBmV_microVolt(dBmV)));
+                        dbW.setText(String.format("%.3f",dBmV_dBW(dBmV)));
                     break;
                 case 4:
-                    try {
-                        test=Math.log10(Double.parseDouble(uV.getText().toString()));
-                        if ("".equals(uV.getText().toString())) {
-                            Volt = 0.0d;
-                        } else {
-                            Volt = Double.parseDouble(uV.getText().toString());
-                        }
-                        watts.setText(String.valueOf(power.microVolt_watt(Volt)));
-                        dbm.setText(String.valueOf(power.microVolt_dBm(Volt)));
-                        dbmV.setText(String.valueOf(power.microVolt_dBmV(Volt)));
-                        dbW.setText(String.valueOf(power.microVolt_dBW(Volt)));
-                    }
-                    catch(NumberFormatException e)
-                    {
-                        Toast.makeText(fragment_power.this.getContext(),"Invalid entry",Toast.LENGTH_SHORT).show();
-                        uV.setText(String.valueOf(0.0d));
-                    }
+                        Volt=Double.parseDouble(uV.getText().toString());
+                        //test=Math.log10(Volt);
+                        watts.setText(String.format("%.3f",microVolt_watt(Volt)));
+                        dbm.setText(String.format("%.3f",microVolt_dBm(Volt)));
+                        dbmV.setText(String.format("%.3f",microVolt_dBmV(Volt)));
+                        dbW.setText(String.format("%.3f",microVolt_dBW(Volt)));
                     break;
                 case 5:
-                    try{
-                        test=Math.log10(Double.parseDouble(dbW.getText().toString()));
-                        if ("".equals(dbW.getText().toString())) {
-                            dBW = 0.0d;
-                        } else {
-                            dBW = Double.parseDouble(dbW.getText().toString());
-                        }
-                        watts.setText(String.valueOf(power.dBW_watt(dBW)));
-                        dbm.setText(String.valueOf(power.dBW_dBm(dBW)));
-                        uV.setText(String.valueOf(power.dBW_microVolt(dBW)));
-                        dbmV.setText(String.valueOf(power.dBW_dBmV(dBW)));
-                    }
-                    catch(NumberFormatException e){
-                        Toast.makeText(fragment_power.this.getContext(),"Invalid entry", Toast.LENGTH_SHORT).show();
-                        dbW.setText(String.valueOf(0.0d));}
+                        dBW=Double.parseDouble(dbW.getText().toString());
+                        //test=Math.log10(dBW);
+                        watts.setText(String.format("%.3f",dBW_watt(dBW)));
+                        dbm.setText(String.format("%.3f",dBW_dBm(dBW)));
+                        uV.setText(String.format("%.3f",dBW_microVolt(dBW)));
+                        dbmV.setText(String.format("%.3f",dBW_dBmV(dBW)));
                     break;
                 default:
                     watts.setText("");
@@ -222,5 +179,89 @@ public class fragment_power extends Fragment {
             uV.setText(String.valueOf(0.0d));
             dbW.setText(String.valueOf(0.0d));
         });
+    }
+    private String outputDecimal(double input)
+    {
+        return String.format("%.3f",input);
+    }
+
+    public double watts_dBmV(double Wt){
+        return ((Math.log10(Wt) * 10.0d) + 30.0d)+ 46.9897d;
+    }
+    public double watts_dBW(double Wt){
+        return ((Math.log10(Wt) * 10.0d));
+    }
+    public double watts_microVolt(double Wt){
+
+        return ((Math.sqrt(Math.pow(10.0d, ((Math.log10(Wt) * 10.0d) + 30.0d) / 10.0d) * 0.05d))); }
+    public double watts_dBm(double Wt){
+        return (((Math.log10(Wt) * 10.0d) + 30.0d));
+    }
+
+    public double dBW_dBmV(double dBW){
+        if(Math.pow(10.0d, dBW / 10.0d) == 0)
+        {
+            return 0.0d;
+        }
+        return ((46.9897d + ((Math.log10(Math.pow(10.0d, dBW / 10.0d)) * 10.0d) + 30.0d)));
+    }
+    public double dBW_microVolt(double dBW){
+        return ((Math.sqrt(Math.pow(10.0d, ((Math.log10(Math.pow(10.0d, dBW / 10.0d)) * 10.0d) + 30.0d) / 10.0d) * 0.05d)));
+    }
+    public double dBW_watt(double dBW){
+        return ((Math.pow(10.0d, dBW / 10.0d)));
+    }
+    public double dBW_dBm(double dBW){
+        return (((Math.log10(Math.pow(10.0d, dBW / 10.0d)) * 10.0d) + 30.0d));
+    }
+
+    public double microVolt_dBmV(double uVolt){
+        return ((46.9897d + (Math.log10((uVolt * uVolt) / 0.05d) * 10.0d)));
+    }
+    public double microVolt_dBW(double uVolt){
+        return ((Math.log10(Math.pow(10.0d, (Math.log10((uVolt * uVolt) / 0.05d) * 10.0d) / 10.0d) / 1000.0d) * 10.0d));
+    }
+    public double microVolt_watt(double uVolt){
+        return ((Math.pow(10.0d, (Math.log10((uVolt * uVolt) / 0.05d) * 10.0d) / 10.0d) / 1000.0d));
+    }
+    public double microVolt_dBm(double uVolt){
+        return ((Math.log10((uVolt * uVolt) / 0.05d) * 10.0d));
+    }
+
+    public double dBmV_dBW(double dBmV){
+        return (((Math.log10(Math.pow(10.0d, (dBmV - 46.9897d) / 10.0d) / 1000.0d) * 10.0d)));
+    }
+    public double dBmV_microVolt(double dBmV){
+        return (((Math.sqrt(Math.pow(10.0d, (dBmV - 46.9897d) / 10.0d) * 0.05d))));
+    }
+    public double dBmV_watt(double dBmV){
+        return ((Math.pow(10.0d, (dBmV - 46.9897d) / 10.0d) / 1000.0d));
+    }
+    public double dBmV_dBm(double dBmV){
+        return ((dBmV - 46.9897d));
+    }
+
+    public double dBm_dBmV(double dBm){
+        return ((46.9897d + dBm));
+    }
+    public double dBm_dBW(double dBm){
+        return ((Math.log10(Math.pow(10.0d, dBm / 10.0d) / 1000.0d) * 10.0d));
+    }
+    public double dBm_microVolt(double dBm){
+        return ((Math.sqrt(Math.pow(10.0d, dBm / 10.0d) * 0.05d)));
+    }
+    public double dBm_watt(double dBm){
+        return (Math.pow(10.0d, dBm / 10.0d) / 1000.0d);
+    }
+
+    public boolean isNum(String text)
+    {
+        try {
+            Double.parseDouble(text);
+            return true;
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
 }

@@ -1,10 +1,9 @@
-package Logic;
+package com.example.testapplication.ui;
 
 import java.text.DecimalFormat;
 
 public class UnitsDistance {
     double Km,m,mile,ft;
-    DecimalFormat df = new DecimalFormat("#.000");
     public UnitsDistance()
     {
         Km=0;
@@ -48,26 +47,32 @@ public class UnitsDistance {
 
     public double Km_mile(double Kilo)
     {
-        return Double.parseDouble(df.format(Kilo*(0.621371d)));
+        return (Kilo*(0.621371d));
     }
     public double mile_Km(double mile)
     {
-        return Double.parseDouble(df.format(mile*1.60934d));
+        return (mile*1.60934d);
     }
-    public double mile_m(double mile) {return Double.parseDouble(df.format(mile*1609.34)); }
+    public double mile_m(double mile) {return (mile*1609.34); }
     public double Km_m(double km)
     {
-        return Double.parseDouble(df.format(km*1000d));
+        return (km*1000d);
     }
     public double m_km(double m)
     {
-        return Double.parseDouble(df.format(m/1000d));
+        return (m/1000d);
     }
-    public double m_mile(double m){return Double.parseDouble(df.format(m*0.0006213712d));}
-    public double ft_mile (double ft) {return Double.parseDouble(df.format(ft*0.0001893939d));}
-    public double ft_meter (double ft) {return Double.parseDouble(df.format(ft*0.3048d));};
-    public double ft_km (double ft) {return Double.parseDouble(df.format(ft*0.0003047999366d));}
-    public double km_ft (double km) {return Double.parseDouble(df.format(km*3280.84d));}
-    public double m_ft (double m) {return Double.parseDouble(df.format(m*3.28084d));}
-    public double mile_ft (double mile) {return Double.parseDouble(df.format(mile*5280d));}
+    public double m_mile(double m){return (m*0.0006213712d);}
+    public double ft_mile (double ft) {return (ft*0.0001893939d);}
+    public double ft_meter (double ft) {
+        return (ft*0.3048d);
+    }
+    public double ft_km (double ft) {
+        return (ft*0.0003047999366d);}
+    public double km_ft (double km) {
+        return (km*3280.84d);}
+    public double m_ft (double m) {
+        return (m*3.28084d);}
+    public double mile_ft (double mile) {
+        return (mile*5280d);}
  }
