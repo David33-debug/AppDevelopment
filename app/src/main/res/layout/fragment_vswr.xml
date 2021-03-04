@@ -1,22 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".VSWRFragment">
+<androidx.drawerlayout.widget.DrawerLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
         <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="To calculate effective VSWR at the radio when an additional coax cable is inserted between antenna and radio"
+                android:textStyle="bold" />
+
             <ImageView android:id="@+id/imageView" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="0.0dip" android:layout_marginTop="5.0dip" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:background="@drawable/vswrfinal" />
             <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@android:color/background_dark" android:id="@+id/title_Input" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Please enter the following information:" />
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/textView21" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Antenna VSWR:" />
-            <EditText android:id="@+id/AntennaVSWR" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/textView23" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Coax cable loss per meter (dB):" />
-            <EditText android:id="@+id/meterLoss" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/textView24" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Coax cable length (m):" />
-            <EditText android:id="@+id/lengthCoax" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Input power (Watts):" />
-            <EditText android:id="@+id/inputPower" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/textView21" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Antenna VSWR :" />
+            <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+            android:text="0" android:id="@+id/AntennaVSWR" />
+            <TextView
+                android:id="@+id/textViewFrequency"
+                android:text="Frequency (MHz):"
+                android:textSize="18.0sp" android:textColor="@android:color/background_dark"  android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/FrequencyInput"
+                android:text="0"
+                 android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords"/>
+            <RadioGroup
+                android:id="@+id/radioCable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/CoaxChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Choose a coax cable:"
+                    android:textColor="@android:color/black"
+                    android:textSize="18.0sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerChoice"
+                    android:layout_width="377dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="2dp" />
+                <TextView
+                    android:id="@+id/CableLength1"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cable length:"
+                    android:textColor="@android:color/black"
+                    android:textSize="18.0sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerChoiceDistance"
+                    android:layout_width="196dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp" />
+                <EditText
+                    android:id="@+id/CableInput"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                    android:text="0"  />
+
+                <RadioButton
+                    android:id="@+id/CoaxTransmit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter coax cable loss (dB):"
+                    android:textColor="@android:color/black"
+                    android:textSize="18.0sp" />
+
+                <EditText
+                    android:id="@+id/LossCoax"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                    android:text="0" />
+            </RadioGroup>
+
+
+            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Transmitter output power:" />
+            <Spinner
+                android:id="@+id/spinnerChoicePower"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp" />
+            <EditText android:id="@+id/inputPower" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" android:text="0"/>
 
             <Button
                 android:id="@+id/buttonVSWR"
@@ -34,10 +111,10 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/skjdfasgiy"
+                android:id="@+id/VSWRShow"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="VSWR:"
+                android:text="VSWR at transmitter:"
                 android:textColor="@android:color/background_dark"
                 android:textSize="18.0sp" />
 
@@ -46,7 +123,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="0"/>
 
             <TextView
                 android:id="@+id/xcfvgbhnuj"
@@ -61,17 +139,31 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="0"/>
 
-            <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@android:color/background_dark" android:id="@+id/title_Input2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Additional Outputs:" />
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Feeder Loss (dB):" />
-            <EditText android:id="@+id/totalCoax" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Total cable loss (dB):" />
+            <EditText android:text="0" android:id="@+id/totalCoax" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
             <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf3" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Power at antenna (Watts):" />
-            <EditText android:id="@+id/PowerAtAntenna" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName" />
+            <EditText android:text="0" android:id="@+id/PowerAtAntenna" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName" />
             <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf4" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Antenna reflected power (Watts):" />
-            <EditText android:id="@+id/reflectedPower" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName" />
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/thisOnerrttdf5" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Reflected power at transmitter (Watts):" />
-            <EditText android:id="@+id/transmitterReflected" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName" />
+            <EditText android:text="0" android:id="@+id/reflectedPower" android:layout_width="fill_parent" android:layout_height="wrap_content" android:ems="10" android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/mismatch"
+                android:text="Mismatch loss at antenna (dB)"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18.0sp"/>
+
+            <EditText
+                android:id="@+id/MismatchLoss"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="0"/>
 
         </LinearLayout>
     </ScrollView>

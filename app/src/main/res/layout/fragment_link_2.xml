@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+<androidx.drawerlayout.widget.DrawerLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -22,20 +21,6 @@
                 app:srcCompat="@drawable/linkimage" />
 
             <TextView
-                android:id="@+id/Units"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Units for distance:"
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
-
-            <Spinner
-                android:id="@+id/spinnerChoice_distance"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"/>
-
-            <TextView
                 android:id="@+id/textView8"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -43,6 +28,22 @@
                 android:textColor="@android:color/background_dark"
                 android:textSize="18.0sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/FrequencyInput"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Frequency (MHz):"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/Frequency"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                android:text="0" />
 
             <TextView
                 android:id="@+id/title_GainTransmitter"
@@ -77,22 +78,6 @@
                 android:text="0" />
 
             <TextView
-                android:id="@+id/title_TransmitterRx"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Location A Rx Sensitivity (dBm): "
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
-
-            <EditText
-                android:id="@+id/RxTransmit"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
-                android:text="0" />
-
-            <TextView
                 android:id="@+id/title_ConnectorTransmitter"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -108,27 +93,61 @@
                 android:inputType="textPersonName|numberDecimal|phone|textCapWords"
                 android:text="0" />
 
-            <TextView
-                android:id="@+id/Title_CoaxTransmit"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Location A Coax Cable Loss (dB):"
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
+            <RadioGroup
+                android:id="@+id/radioCoax1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
 
-            <TextView
+            <RadioButton
                 android:id="@+id/CoaxChoice1"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Choose a coax cable:"
                 android:textColor="@android:color/black"
-                android:textSize="18.0sp"/>
+                android:textSize="18.0sp" />
 
-            <Spinner
-                android:id="@+id/spinnerChoice"
-                android:layout_width="100dp"
+                <Spinner
+                    android:id="@+id/spinnerChoice"
+                    android:layout_width="204dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp">
+
+                    <TextView
+                        android:id="@+id/CableLength1"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Cable length:"
+                        android:textColor="@android:color/black"
+                        android:textSize="18.0sp" />
+
+                    <TextView
+                        android:id="@+id/textViewUnit1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/CableLength1"
+                        android:textColor="@android:color/black"
+                        android:textSize="18.0sp"
+                        android:text="(m)" />
+                </RelativeLayout>
+                <EditText
+                    android:id="@+id/Cable1Input"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                    android:text="0"  />
+
+                <RadioButton
+                android:id="@+id/Title_CoaxTransmit"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left" />
+                android:text="Enter coax cable loss (dB):"
+                android:textColor="@android:color/black"
+                android:textSize="18.0sp" />
 
             <EditText
                 android:id="@+id/TransmitCoax"
@@ -137,6 +156,7 @@
                 android:ems="10"
                 android:inputType="textPersonName|numberDecimal|phone|textCapWords"
                 android:text="0" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/textView9"
@@ -180,6 +200,22 @@
                 android:text="0" />
 
             <TextView
+                android:id="@+id/title_FadeMargin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Fade margin (dB):"
+                android:textColor="@android:color/black"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/FadingMargin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                android:text="0"  />
+
+            <TextView
                 android:id="@+id/title_ConnectorReciever"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -194,28 +230,61 @@
                 android:ems="10"
                 android:inputType="textPersonName|numberDecimal|phone|textCapWords"
                 android:text="0" />
-
-            <TextView
-                android:id="@+id/Title_CoaxReciever"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Location B Coax Cable Loss (dB):"
+        <RadioGroup
+            android:id="@+id/radioCoax2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RadioButton
                 android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
-
-            <TextView
-                android:id="@+id/CoaxChoice2"
-                android:layout_width="fill_parent"
+                android:textSize="18.0sp"
+                android:id="@+id/radioButton10"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Choose a coax cable:"
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp"/>
+                android:text="Choose a coax cable:" />
 
             <Spinner
                 android:id="@+id/spinnerChoice1"
-                android:layout_width="100dp"
+                android:layout_width="204dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"/>
+                android:layout_gravity="left" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="24dp">
+
+                <TextView
+                    android:id="@+id/CableLength2"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cable length:"
+                    android:textColor="@android:color/black"
+                    android:textSize="18.0sp" />
+
+                <TextView
+                    android:id="@+id/textViewUnit2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/CableLength2"
+                    android:text="(m)"
+                    android:textColor="@android:color/black"
+                    android:textSize="18.0sp" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/Cable2Input"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                android:text="0"  />
+
+            <RadioButton
+                android:textColor="@android:color/black"
+                android:textSize="18.0sp"
+                android:id="@+id/radioButton11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter coax cable loss (dB):" />
 
             <EditText
                 android:id="@+id/RecieverCoax"
@@ -224,12 +293,25 @@
                 android:ems="10"
                 android:inputType="textPersonName|numberDecimal|phone|textCapWords"
                 android:text="0" />
-
+        </RadioGroup>
             <Button
                 android:id="@+id/button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Calculate" />
+            <TextView
+                android:id="@+id/Units"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Units for distance:"
+                android:textColor="@android:color/black"
+                android:textSize="18.0sp" />
+
+            <Spinner
+                android:id="@+id/spinnerChoice_distance"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"/>
             <TextView
                 android:id="@+id/WhatToCalculate"
                 android:layout_width="fill_parent"
@@ -238,7 +320,9 @@
                 android:textColor="@android:color/black"
                 android:textSize="18.0sp" />
 
+
             <RadioGroup
+                android:id="@+id/radioOutput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
@@ -246,7 +330,7 @@
                     android:id="@+id/radioButton5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Distance" />
+                    android:text="Distance between locations (Km)" />
 
                 <EditText
                     android:id="@+id/Distance"
@@ -260,10 +344,10 @@
                     android:id="@+id/radioButton6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Frequency (MHz)" />
+                    android:text="Tx Power (dBm)" />
 
                 <EditText
-                    android:id="@+id/Frequency"
+                    android:id="@+id/TxPower"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -274,10 +358,10 @@
                     android:id="@+id/radioButton7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Fade Margin (dB)" />
+                    android:text="Received signal strength (dBm) " />
 
                 <EditText
-                    android:id="@+id/FadingMargin"
+                    android:id="@+id/signalReceived"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -329,63 +413,31 @@
                 android:text="0" />
 
             <TextView
-                android:id="@+id/title_FreeSpaceLoss"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Minimum antenna A Gain (dBm):"
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
-
-            <EditText
-                android:id="@+id/maxToDisplay"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="0" />
-
-            <TextView
-                android:id="@+id/title_maxATitle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Maximum permissible coax loss (dB):"
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
-
-            <EditText
-                android:id="@+id/maxACoax"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="0" />
-
-            <TextView
-                android:id="@+id/title_maxFreeSpace"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Maximum permissible free space path loss (dB):"
-                android:textColor="@android:color/black"
-                android:textSize="18.0sp" />
-
-            <EditText
-                android:id="@+id/maxFreeSpaceLoss"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="0" />
-
-            <TextView
                 android:id="@+id/title_bSignal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Estimated received signal at Location B (dBm):"
+                android:text="Received signal strength (dBm):"
                 android:textColor="@android:color/black"
                 android:textSize="18.0sp" />
 
             <EditText
                 android:id="@+id/Bsignal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/title_FreeSpaceLoss"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="EIRP (dBW):"
+                android:textColor="@android:color/black"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/ERPToDisplay"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -400,4 +452,4 @@
                 android:textColor="@android:color/holo_red_dark" />
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

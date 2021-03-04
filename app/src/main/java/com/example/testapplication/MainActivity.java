@@ -1,24 +1,23 @@
 package com.example.testapplication;
 
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+//    NavController.OnDestinationChangedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_link,R.id.nav_vswr,R.id.nav_power,R.id.nav_fresnel,R.id.nav_coax, R.id.nav_home)// R.id.nav_gallery, R.id.nav_slideshow)
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_link,R.id.nav_vswr,R.id.nav_power,R.id.nav_fresnel,R.id.nav_coax, R.id.nav_home)// R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
     }
 
     @Override
@@ -48,10 +49,46 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen((int) GravityCompat.START)) {
+            drawer.closeDrawer((int) GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+/*
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        FragmentManager fragmentManager = getFragmentManager();
+        if (id == R.id.nav_home) {
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+        } else if (id == R.id.nav_fresnel) {
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new fragment_fresnel()).commit();
+        } else if (id == R.id.nav_link) {
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new fragment_link()).commit();
+        } else if (id == R.id.nav_power) {
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new fragment_power()).commit();
+        } else if (id == R.id.nav_vswr) {
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new VSWRFragment()).commit();
+        } else if (id == R.id.nav_coax) {
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, new CoaxFragment()).commit();
+        }
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawer((int) GravityCompat.START);
+        return true;
+    }*/
+
 }
+
+
+
+
+

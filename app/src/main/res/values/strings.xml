@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Poynting RF Calculator</string>
+    <string name="app_name">Poynting RF </string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -10,9 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_power">Power</string>
-    <string name="menu_fresnel">Fresnel</string>
-    <string name="menu_vswr">VSWR</string>
-    <string name="menu_link">Link</string>
-    <string name="menu_coax">Coax</string>
+    <string name="menu_power">Power Conversions</string>
+    <string name="menu_fresnel">Fresnel Zone Clearance</string>
+    <string name="menu_vswr">Effective VSWR</string>
+    <string name="menu_link">Link Budget</string>
+    <string name="menu_coax">Coax Cable Loss</string>
 </resources>
