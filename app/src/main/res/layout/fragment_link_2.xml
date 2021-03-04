@@ -106,11 +106,11 @@
                 android:textColor="@android:color/black"
                 android:textSize="18.0sp" />
 
-            <Spinner
-                android:id="@+id/spinnerChoice"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
+                <Spinner
+                    android:id="@+id/spinnerChoice"
+                    android:layout_width="204dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -200,6 +200,22 @@
                 android:text="0" />
 
             <TextView
+                android:id="@+id/title_FadeMargin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Fade margin (dB):"
+                android:textColor="@android:color/black"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/FadingMargin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                android:text="0"  />
+
+            <TextView
                 android:id="@+id/title_ConnectorReciever"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -228,9 +244,10 @@
 
             <Spinner
                 android:id="@+id/spinnerChoice1"
-                android:layout_width="100dp"
+                android:layout_width="204dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="24dp">
@@ -248,10 +265,11 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/CableLength2"
+                    android:text="(m)"
                     android:textColor="@android:color/black"
-                    android:textSize="18.0sp"
-                    android:text="(m)" />
+                    android:textSize="18.0sp" />
             </RelativeLayout>
+
             <EditText
                 android:id="@+id/Cable2Input"
                 android:layout_width="fill_parent"
@@ -312,7 +330,7 @@
                     android:id="@+id/radioButton5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Distance" />
+                    android:text="Distance between locations (Km)" />
 
                 <EditText
                     android:id="@+id/Distance"
@@ -340,10 +358,10 @@
                     android:id="@+id/radioButton7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Fade Margin (dB)" />
+                    android:text="Received signal strength (dBm) " />
 
                 <EditText
-                    android:id="@+id/FadingMargin"
+                    android:id="@+id/signalReceived"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -414,7 +432,7 @@
                 android:id="@+id/title_FreeSpaceLoss"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="ERP (dBm):"
+                android:text="EIRP (dBW):"
                 android:textColor="@android:color/black"
                 android:textSize="18.0sp" />
 

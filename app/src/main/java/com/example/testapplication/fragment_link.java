@@ -29,7 +29,7 @@ import com.example.testapplication.ui.UnitsDistance;
 public class fragment_link extends Fragment {
     TextView unit1,unit2;
     Button calculate;
-    EditText distance, frequency, fadingMargin, transmitPower;
+    EditText distance, frequency, signalReceived, fadingMargin, transmitPower;
     EditText locationAGain, LocationATxPower, LocationAConnectorLoss, LocationACoaxCableLoss,cable1Length,cable2Length;
     EditText locationBGain, LocationBRxSensitivity, LocationBConnectorLoss, LocationBCoaxCableLoss;
     EditText TotalCoaxLoss, FreeSpacePathLoss,ERP, EstimatedReceivedSignalAtB;
@@ -38,7 +38,7 @@ public class fragment_link extends Fragment {
     RadioButton chooseCoax2,enterCoax2;
     RadioGroup outputCalc,radioCoax1,radioCoax2;
     Spinner distance_unit,coax1,coax2;
-    String itemDistance,itemCoax1,itemCoax2;
+    String itemDistance,choiceOfItem,itemCoax1,itemCoax2;
     int calculator=0,choosing1=0,choosing2=0;
 
     CoaxCalcs coaxObj1= new CoaxCalcs();
@@ -51,6 +51,10 @@ public class fragment_link extends Fragment {
     double cableAttenuation=0,cableAttenuation1=0;
     double cableLength1=0,cableLength2=0;
     double CoaxLossTx=0,CoaxLossRx=0;
+
+    double constant=1;
+
+    double ReceivedSignal;
 
     double distanceKm=0;
     double frequencyMHz=0;
@@ -91,12 +95,15 @@ public class fragment_link extends Fragment {
         enterCoax2= getView().findViewById(R.id.radioButton11);
 
         Distance= getView().findViewById(R.id.radioButton5);
+
         FadeMargin= getView().findViewById(R.id.radioButton6);
         TxPower= getView().findViewById(R.id.radioButton7);
 
         transmitPower= getView().findViewById(R.id.TxPower);
         calculate= getView().findViewById(R.id.button);
         distance= getView().findViewById(R.id.Distance);
+        signalReceived=getView().findViewById(R.id.signalReceived);
+
         fadingMargin= getView().findViewById(R.id.FadingMargin);
 
         cable1Length= getView().findViewById(R.id.Cable1Input);
@@ -124,15 +131,15 @@ public class fragment_link extends Fragment {
         coax2= getView().findViewById(R.id.spinnerChoice1);
 
         TotalCoaxLoss.setEnabled(false);
-        TotalCoaxLoss.setTextColor(Color.RED);
+        TotalCoaxLoss.setTextColor(Color.BLUE);
         FreeSpacePathLoss.setEnabled(false);
-        FreeSpacePathLoss.setTextColor(Color.RED);
+        FreeSpacePathLoss.setTextColor(Color.BLUE);
 
         ERP.setEnabled(false);
-        ERP.setTextColor(Color.RED);
+        ERP.setTextColor(Color.BLUE);
 
         EstimatedReceivedSignalAtB.setEnabled(false);
-        EstimatedReceivedSignalAtB.setTextColor(Color.RED);
+        EstimatedReceivedSignalAtB.setTextColor(Color.BLUE);
 
         distance.setEnabled(false);
         transmitPower.setEnabled(true);
@@ -149,16 +156,22 @@ public class fragment_link extends Fragment {
         distance_unit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                itemDistance=parent.getItemAtPosition(position).toString();
-                if(itemDistance.equals("Km"))
+                choiceOfItem=parent.getItemAtPosition(position).toString();
+                if(choiceOfItem.equals("Km/m"))
                 {
                     unit1.setText("(m)");
                     unit2.setText("(m)");
+                    itemDistance="Km";
+                    Distance.setText("Distance between locations (Km)");
+                    constant=1;
                 }
-                else if(itemDistance.equals("mile"))
+                else if(choiceOfItem.equals("mile/ft"))
                 {
                     unit1.setText("(ft)");
                     unit2.setText("(ft)");
+                    itemDistance="mile";
+                    Distance.setText("Distance between locations (mile)");
+                    constant=3.28;
                 }
             }
 
@@ -211,7 +224,7 @@ public class fragment_link extends Fragment {
                         row = 10;
                         break;
                 }
-                cableAttenuation=coaxObj1.fetchAttenuation(row);
+                cableAttenuation=coaxObj1.fetchAttenuation(row,constant);
             }
 
             @Override
@@ -263,7 +276,7 @@ public class fragment_link extends Fragment {
                         row = 10;
                         break;
                 }
-                cableAttenuation1=coaxObj2.fetchAttenuation(row);
+                cableAttenuation1=coaxObj2.fetchAttenuation(row,constant);
             }
 
             @Override
@@ -322,8 +335,8 @@ public class fragment_link extends Fragment {
                 catch(NumberFormatException e)
                 {
                     Toast.makeText(fragment_link.this.getContext(),"Need a number",Toast.LENGTH_SHORT).show();}
-                cableAttenuation=coaxObj1.attenuationLoss_dB_m(frequencyMHz);
-                cableAttenuation1=coaxObj2.attenuationLoss_dB_m(frequencyMHz);
+                cableAttenuation=coaxObj1.attenuationLoss_dB_m(frequencyMHz,constant);
+                cableAttenuation1=coaxObj2.attenuationLoss_dB_m(frequencyMHz,constant);
 
 
             }
@@ -522,14 +535,16 @@ public class fragment_link extends Fragment {
                     calculator=0;
                     distance.setEnabled(false);
                     transmitPower.setEnabled(true);
-                    fadingMargin.setEnabled(true);
+                    signalReceived.setEnabled(true);
+                    LocationATxPower.setEnabled(true);
+
                 }
                 else if(checkedId==R.id.radioButton6)
                 {
                     calculator=1;
                     transmitPower.setEnabled(false);
                     distance.setEnabled(true);
-                    fadingMargin.setEnabled(true);
+                    signalReceived.setEnabled(true);
                     LocationATxPower.setEnabled(false);
                 }
                 else if(checkedId==R.id.radioButton7)
@@ -537,7 +552,8 @@ public class fragment_link extends Fragment {
                     calculator=2;
                     transmitPower.setEnabled(true);
                     distance.setEnabled(true);
-                    fadingMargin.setEnabled(false);
+                    signalReceived.setEnabled(false);
+                    LocationATxPower.setEnabled(true);
                 }
             }
         });
@@ -580,8 +596,11 @@ public class fragment_link extends Fragment {
                 case 2:
                     distanceKm=Double.parseDouble(distance.getText().toString());
                     TransmitPower=Double.parseDouble(transmitPower.getText().toString());
-                    fadeMargin=linkB.fadeMarginCalc(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx,RxSensitivity);
-                    fadingMargin.setText(String.format("%.3f",fadeMargin));
+                    ReceivedSignal=linkB.RxReceiveStrength(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx);
+                    signalReceived.setText(String.format("%.3f",ReceivedSignal));
+
+                    //fadeMargin=linkB.fadeMarginCalc(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx,RxSensitivity);
+                    //fadingMargin.setText(String.format("%.3f",fadeMargin));
                     //TransmitPower=linkB.TxPower(itemDistance,distanceKm,frequencyMHz,RxSensitivity,fadeMargin,CoaxLossTx,gainTransmitter,CoaxLossRx,gainReceiver);
                     //transmitPower.setText(String.valueOf(TransmitPower));
                     //distance.setText(String.valueOf(linkB.distanceCalc(frequencyMHz,fadeMargin,RxSensitivity,TransmitPower,CoaxLossTx,gainTransmitter,CoaxLossRx,gainReceiver)));
@@ -591,7 +610,7 @@ public class fragment_link extends Fragment {
 
             TotalCoaxLoss.setText(String.format("%.3f",CoaxLossRx+CoaxLossTx));
             FreeSpacePathLoss.setText(String.format("%.3f",linkB.freeSpaceLoss(itemDistance,distanceKm,frequencyMHz)));
-            EstimatedReceivedSignalAtB.setText(String.format("%.3f",linkB.RxReceiveStrength(itemDistance,distanceKm,frequencyMHz,gainReceiver,CoaxLossRx,TransmitPower,gainTransmitter,CoaxLossTx)));
+            EstimatedReceivedSignalAtB.setText(String.format("%.3f",ReceivedSignal));
 
         });
 

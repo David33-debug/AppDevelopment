@@ -134,10 +134,10 @@ public class fragment_power extends Fragment {
                     break;
                 case 2:
                         dBm=Double.parseDouble(dbm.getText().toString());
-                        watts.setText(String.format("%.3f",dBm_watt(test)));
-                        dbmV.setText(String.format("%.3f",dBm_dBmV(test)));
-                        uV.setText(String.format("%.3f",dBm_microVolt(test)));
-                        dbW.setText(String.format("%.3f",dBm_dBW(test)));
+                        watts.setText(String.format("%.3f",dBm_watt(dBm)));
+                        dbmV.setText(String.format("%.3f",dBm_dBmV(dBm)));
+                        uV.setText(String.format("%.3f",dBm_microVolt(dBm)));
+                        dbW.setText(String.format("%.3f",dBm_dBW(dBm)));
                     break;
                 case 3:
                         dBmV=Double.parseDouble(dbmV.getText().toString());

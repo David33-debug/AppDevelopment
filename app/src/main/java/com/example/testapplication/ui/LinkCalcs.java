@@ -8,6 +8,7 @@ public class LinkCalcs {
 
     DecimalFormat df = new DecimalFormat("#.000");
     UnitsDistance unitConvert=new UnitsDistance();
+    PowCalculations powCalc= new PowCalculations();
     double distanceConstKm=32.45d;
     double distanceConstMile=36.6d;
     double num1,num2,num3,exp;
@@ -19,16 +20,16 @@ public class LinkCalcs {
             return 0.0d;
         }
         distance=unitConvert.normalise(input,distance);
-        return (32.5d+(20*Math.log10(distance)+(20*Math.log10(frequency))));
+        return (32.5d+(20*Math.log10(distance/1000)+(20*Math.log10(frequency))));
     }
     public double erp(double transmitPower, double TxGain, double TxcableLoss)
     {
-        return (transmitPower+TxGain-TxcableLoss);
+        return powCalc.dBm_dBW(transmitPower+TxGain-TxcableLoss);
     }
     public double RxReceiveStrength(String input, double distance, double frequency,double RxGain,double RxCableLoss,double transmitPower, double TxGain, double TxcableLoss )
     {
         //return (TxPower+TxGain+RxGain-distanceConst-(20*Math.log10(distance))-(20*Math.log10(frequency))));
-        return (erp(transmitPower,TxGain,TxcableLoss)-freeSpaceLoss(input, distance,frequency)+RxGain-RxCableLoss);
+        return (transmitPower+TxGain-TxcableLoss)-freeSpaceLoss(input, distance,frequency)+RxGain-RxCableLoss;
     }
 
     public double TxPower(String input,double distance, double frequency, double RxSensitivity, double fadeMargin, double TxCableLoss, double TxGain, double RxCableLoss, double RxGain)
@@ -57,6 +58,31 @@ public class LinkCalcs {
     private double distanceConvert(double value, String output)
     {
         return unitConvert.distanceConvert(value,output);
+    }
+
+    public double ERPdB_EIRPdB(double ERPdB)
+    {
+        return ERPdB+2.15d;
+    }
+    public double ERPW_EIRPW(double ERPW)
+    {
+        return ERPW*1.64d;
+    }
+    public double EIRPdB_ERPdB(double EIRPdB)
+    {
+        return EIRPdB-2.15d;
+    }
+    public double EIRPW_ERPW(double EIRPW)
+    {
+        return EIRPW/1.64d;
+    }
+    public double dBi_dBd(double dBi)
+    {
+        return dBi-2.16d;
+    }
+    public double dBd_dBi(double dBd)
+    {
+        return dBd+2.16;
     }
 
 }

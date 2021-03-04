@@ -75,4 +75,20 @@ public class UnitsDistance {
         return (m*3.28084d);}
     public double mile_ft (double mile) {
         return (mile*5280d);}
+        public double dBi_dBd(double dBi) {
+        return dBi-2.16d;
+    }
+    public double dBd_dBi(double dBd)
+    {
+        return dBd+2.16;
+    }
+    public double mm_inch(double mm)
+    {
+        return Double.parseDouble(String.format("%.3f",mm*0.03937));
+    }
+    public double inch_mm(double inch)
+    {
+        return Double.parseDouble(String.format("%.3f",inch*25.4));
+    }
+
  }

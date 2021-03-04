@@ -10,6 +10,12 @@
                 android:layout_height="259dp"
                 app:srcCompat="@drawable/fresnelpic" />
 
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Picture By Jcmcclurg - FresnelSVG.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=22193531" />
+
             <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@android:color/background_dark" android:id="@+id/title_firstDistance2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="GENERAL INPUTS:" />
                 <TextView
                     android:textSize="18.0sp" android:textStyle="bold" android:textColor="@android:color/background_dark" android:id="@+id/title_units" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Units:"/>
@@ -63,17 +69,6 @@
 
             <EditText
                 android:id="@+id/distance1" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="0" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords"/>
-
-            <TextView
-                android:id="@+id/title_distance_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Distance from obstruction to antenna 2-d2 :"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18.0sp" />
-
-            <EditText
-                android:id="@+id/distance2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="0" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords"/>
 
             <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/title_heightFirstAntenna" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Height of first antenna above ground :" />
 
@@ -144,6 +139,22 @@
                 android:text="0" />
 
             <TextView
+                android:id="@+id/clearanceObstacle_fz"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Clearance between obstacle and Fresnel zone:"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18.0sp" />
+
+            <EditText
+                android:id="@+id/Clearance_Obstacle_fz"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
+                android:text="0" />
+
+            <TextView
                 android:id="@+id/clearanceObstacle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -174,25 +185,22 @@
                 android:ems="10"
                 android:inputType="textPersonName|numberDecimal|phone|textCapWords"
                 android:text="0" />
+
             <TextView
-                android:id="@+id/clearanceObstacle_fz"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Clearance between obstacle and Fresnel zone:"
-                android:textColor="@android:color/background_dark"
-                android:textSize="18.0sp" />
+                android:id="@+id/textView13"
+                android:layout_width="390dp"
+                android:textStyle="bold"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:text="Values in RED refer to distances encroaching the fresnel zone, while values in BLUE refer to distances between the object and the fresnel zone " />
 
-            <EditText
-                android:id="@+id/Clearance_Obstacle_fz"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName|numberDecimal|phone|textCapWords"
-                android:text="0" />
-
-            <TextView android:textSize="18.0sp" android:textColor="@android:color/background_dark" android:id="@+id/title_lossClearance" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Loss clearance relative to obstruction:" />
-
-            <EditText android:id="@+id/LossClearance" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="0" android:ems="10" android:inputType="textPersonName|numberDecimal|phone|textCapWords" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="390dp"
+                android:textStyle="bold"
+                android:layout_height="84dp"
+                android:layout_gravity="center"
+                android:text="" />
 
         </LinearLayout>
     </ScrollView>

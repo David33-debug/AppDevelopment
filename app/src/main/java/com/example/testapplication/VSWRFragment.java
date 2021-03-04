@@ -1,5 +1,6 @@
 package com.example.testapplication;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,23 +24,27 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.testapplication.ui.CoaxCalcs;
+import com.example.testapplication.ui.PowCalculations;
 import com.example.testapplication.ui.UnitsDistance;
 import com.example.testapplication.ui.VSWRCalc;
 
 public class VSWRFragment extends Fragment {
 
 
-    EditText vswrIn, cableLossPerMeter, inputPower,lengthCable,CoaxCableLoss,frequency;
+    EditText vswrIn, cableLossPerMeter, inputPower,lengthCable,CoaxCableLoss,frequency,mismatch;
     EditText vswrOut, returnLoss, feederLoss, powerAtAntenna, reflectedPower, reflectedPowerAtTransmitter;
     Button calculate;
-    Spinner distanceChoice,coax1;
-    String itemDistance,itemCoax1;
+    Spinner distanceChoice,coax1,choicePower;
+    String itemDistance,itemCoax1,itemPower;
     int choice=0,row=0,choosing=0;
     TextView displayUnits;
     RadioGroup coaxRadio;
     RadioButton chooseCoax1,enterCoax1;
 
     double totalCoaxLoss;
+
+    double constant=1;
+
     double powerAntenna;
     double antennaREflected;
     double transmitterReflected;
@@ -72,43 +77,50 @@ public class VSWRFragment extends Fragment {
         CoaxCalcs cableCalc=new CoaxCalcs();
         UnitsDistance unitConv=new UnitsDistance();
         VSWRCalc vswrCalcs= new VSWRCalc();
+        PowCalculations powCalcs=new PowCalculations();
 
 
-        vswrIn = (EditText) getView().findViewById(R.id.AntennaVSWR);
-        inputPower = (EditText) getView().findViewById(R.id.inputPower);
-        frequency=(EditText)getView().findViewById(R.id.FrequencyInput);
+        mismatch=getView().findViewById(R.id.MismatchLoss);
 
-        vswrOut = (EditText) getView().findViewById(R.id.outputVSWR);
-        returnLoss = (EditText) getView().findViewById(R.id.returnLoss);
-        feederLoss = (EditText) getView().findViewById(R.id.totalCoax);
-        powerAtAntenna = (EditText) getView().findViewById(R.id.PowerAtAntenna);
-        reflectedPower = (EditText) getView().findViewById(R.id.reflectedPower);
+        vswrIn = getView().findViewById(R.id.AntennaVSWR);
+        inputPower = getView().findViewById(R.id.inputPower);
+        frequency= getView().findViewById(R.id.FrequencyInput);
 
-        calculate = (Button) getView().findViewById(R.id.buttonVSWR);
+        vswrOut = getView().findViewById(R.id.outputVSWR);
+        returnLoss = getView().findViewById(R.id.returnLoss);
+        feederLoss = getView().findViewById(R.id.totalCoax);
+        powerAtAntenna = getView().findViewById(R.id.PowerAtAntenna);
+        reflectedPower = getView().findViewById(R.id.reflectedPower);
 
-        coaxRadio=(RadioGroup) getView().findViewById(R.id.radioCable);
+        calculate = getView().findViewById(R.id.buttonVSWR);
 
-        chooseCoax1=(RadioButton)getView().findViewById(R.id.CoaxChoice);
+        coaxRadio= getView().findViewById(R.id.radioCable);
+
+        chooseCoax1= getView().findViewById(R.id.CoaxChoice);
         chooseCoax1.setChecked(true);
-        enterCoax1=(RadioButton)getView().findViewById(R.id.CoaxTransmit);
+        enterCoax1= getView().findViewById(R.id.CoaxTransmit);
 
-        distanceChoice=(Spinner)getView().findViewById(R.id.spinnerChoiceDistance);
-        coax1=(Spinner)getView().findViewById(R.id.spinnerChoice);
+        choicePower=getView().findViewById(R.id.spinnerChoicePower);
 
-        lengthCable=(EditText)getView().findViewById(R.id.CableInput);
-        CoaxCableLoss=(EditText)getView().findViewById(R.id.LossCoax);
+        distanceChoice= getView().findViewById(R.id.spinnerChoiceDistance);
+        coax1= getView().findViewById(R.id.spinnerChoice);
+
+        lengthCable= getView().findViewById(R.id.CableInput);
+        CoaxCableLoss= getView().findViewById(R.id.LossCoax);
         CoaxCableLoss.setEnabled(false);
 
+        mismatch.setEnabled(false);
+        mismatch.setTextColor(Color.BLUE);
         vswrOut.setEnabled(false);
-        vswrOut.setTextColor(Color.RED);
+        vswrOut.setTextColor(Color.BLUE);
         returnLoss.setEnabled(false);
-        returnLoss.setTextColor(Color.RED);
+        returnLoss.setTextColor(Color.BLUE);
         feederLoss.setEnabled(false);
-        feederLoss.setTextColor(Color.RED);
+        feederLoss.setTextColor(Color.BLUE);
         powerAtAntenna.setEnabled(false);
-        powerAtAntenna.setTextColor(Color.RED);
+        powerAtAntenna.setTextColor(Color.BLUE);
         reflectedPower.setEnabled(false);
-        reflectedPower.setTextColor(Color.RED);
+        reflectedPower.setTextColor(Color.BLUE);
 
         frequency.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,7 +134,7 @@ public class VSWRFragment extends Fragment {
                     } catch (NumberFormatException e) {
                         frequency.setText(BuildFile.FLAVOR);
                     }
-                    //cableAttenuation=cableCalc.attenuationLoss_dB_m(freq);
+                    cableAttenuation=cableCalc.attenuationLoss_dB_m(freq,constant);
                 }
             }
 
@@ -161,11 +173,15 @@ public class VSWRFragment extends Fragment {
                 if(itemDistance.equals("m"))
                 {
                     choice=0;
+                    constant=1;
+
                 }
                 else if(itemDistance.equals("ft"))
                 {
                     choice=1;
+                    constant=3.28;
                 }
+                frequency.setText(frequency.getText().toString());
             }
 
             @Override
@@ -204,7 +220,23 @@ public class VSWRFragment extends Fragment {
                     row=9;}
                 else if(itemCoax1.equals("LEONI Dacar 302")){
                     row=10;}
-                //cableAttenuation=cableCalc.fetchAttenuation(row);
+                cableAttenuation=cableCalc.fetchAttenuation(row,constant);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapter3= ArrayAdapter.createFromResource(VSWRFragment.this.getContext() , R.array.power_units_small, android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        choicePower.setAdapter(adapter3);
+
+        choicePower.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                itemPower=parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -251,6 +283,7 @@ public class VSWRFragment extends Fragment {
         });
 
         calculate.setOnClickListener(v -> {
+
             if(!isNum(vswrIn.getText().toString()))
             {
                 Toast.makeText(VSWRFragment.this.getContext(),"Please enter the antenna VSWR",Toast.LENGTH_SHORT).show();
@@ -281,6 +314,7 @@ public class VSWRFragment extends Fragment {
                 {
                     cable=unitConv.normalise(itemDistance,cable);
                 }
+
                 if(choosing==0){
                     coaxLoss=cable*cableAttenuation;
                     //totalCoaxLoss = vswrCalcs.coax_loss(coaxLoss,cable);
@@ -292,6 +326,12 @@ public class VSWRFragment extends Fragment {
                 }
 
                 inPower=Double.parseDouble(inputPower.getText().toString());
+
+                if(itemPower.equals("dBm"))
+                {
+                    inPower=powCalcs.dBm_watt(inPower);
+                }
+
                 vswr=Double.parseDouble(vswrIn.getText().toString());
 
                 //using OOP
@@ -304,8 +344,8 @@ public class VSWRFragment extends Fragment {
                 feederLoss.setText(String.format("%.3f",coaxLoss));
 
                 //using OOP
-                antennaREflected = vswrCalcs.ant_reflected_power(vswr,powerAntenna);
-
+                //antennaREflected = vswrCalcs.ant_reflected_power(vswr,powerAntenna);
+                antennaREflected = vswrCalcs.reflectedPower_watts(powerAntenna);
                 reflectedPower.setText(String.format("%.3f",antennaREflected));
 
                 //using OOP
@@ -317,9 +357,11 @@ public class VSWRFragment extends Fragment {
 
                 finalVSWRDouble = vswrCalcs.vswr_at_transmitter(transmitterReflected,inPower);
 
-                vswrOut.setText(String.valueOf(finalVSWRDouble));
+                vswrOut.setText(String.format("%.3f",finalVSWRDouble));
 
                 returnLoss.setText(String.format("%.3f",vswrCalcs.return_loss(vswr)));
+
+                mismatch.setText(String.format("%.3f",vswrCalcs.mismatchLoss_dB(vswr)));
 
         });
 

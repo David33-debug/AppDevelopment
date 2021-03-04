@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 public class VSWRCalc {
     DecimalFormat df = new DecimalFormat("#.000");
     public VSWRCalc(){}
+    double ReturnLoss;
 
     public double pow_received_at_ant(double inPower, double totalCoaxLoss)
     {
@@ -31,13 +32,31 @@ public class VSWRCalc {
         {
             return 0.0d;
         }
-        return (Math.log10((VSWR - 1.0d) / (1.0d + VSWR)) * -20.0d);
+        ReturnLoss=20*Math.log10((VSWR+1)/(VSWR-1));
+        return ReturnLoss;//(Math.log10((VSWR - 1.0d) / (1.0d + VSWR)) * -20.0d);
     }
 
     public double power_transmitted_by_antenna_watts(double vswr, double powRef_watts)
     {
         return ((Math.pow(Math.sqrt(powRef_watts)*(1+vswr),2))/(Math.pow((vswr-1),2)));
     }
+
+    public double power_lost_in_transfer_dB(double vswr)
+    {
+        return 10*Math.log10(1-Math.pow((vswr-1)/(vswr+1),2));
+    }
+
+    public double reflectedPower_watts(double powerIncident)
+    {
+        return powerIncident/(Math.pow(10,(ReturnLoss/10)));
+    }
+
+    public double mismatchLoss_dB(double vswr)
+    {
+        return (-1)*10*Math.log10(1-Math.pow((vswr-1)/(vswr+1),2));
+    }
+
+
 
     /*public double power_loss_due_to_reflection_watts(double enteringPower_watts,double reflectedPower_watts)
     {

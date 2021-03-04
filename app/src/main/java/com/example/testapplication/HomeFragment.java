@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,8 @@ import com.example.testapplication.ui.home.HomeViewModel;
 
 public class HomeFragment extends Fragment {
     Button website;
+
+    private ImageView facebook,twitter,linkedin,youtube;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,6 +42,40 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         website= getView().findViewById(R.id.button2);
+        facebook=getView().findViewById(R.id.imageView5);
+        linkedin=getView().findViewById(R.id.imageView6);
+        twitter=getView().findViewById(R.id.imageView7);
+        youtube=getView().findViewById(R.id.imageView8);
+
+        facebook.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("https://www.facebook.com/PoyntingAntennas/"));
+            startActivity(intent);
+
+        });
+        linkedin.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("https://www.linkedin.com/company/poynting/?originalsubdomain=za"));
+            startActivity(intent);
+        });
+        twitter.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("https://twitter.com/poyntingantenna"));
+            startActivity(intent);
+        });
+        youtube.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("https://www.youtube.com/user/poyntingantennas"));
+            startActivity(intent);
+        });
 
         website.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -47,5 +84,8 @@ public class HomeFragment extends Fragment {
             intent.setData(Uri.parse("http://www.poynting.tech"));
             startActivity(intent);
         });
+
+
     }
+
 }
